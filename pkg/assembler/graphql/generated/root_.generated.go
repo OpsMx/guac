@@ -229,10 +229,11 @@ type ComplexityRoot struct {
 	}
 
 	PackageVersion struct {
-		ID         func(childComplexity int) int
-		Qualifiers func(childComplexity int) int
-		Subpath    func(childComplexity int) int
-		Version    func(childComplexity int) int
+		ApplicationID func(childComplexity int) int
+		ID            func(childComplexity int) int
+		Qualifiers    func(childComplexity int) int
+		Subpath       func(childComplexity int) int
+		Version       func(childComplexity int) int
 	}
 
 	PkgEqual struct {
@@ -325,10 +326,15 @@ type ComplexityRoot struct {
 		Collector      func(childComplexity int) int
 		DbURI          func(childComplexity int) int
 		DbVersion      func(childComplexity int) int
+		Details        func(childComplexity int) int
+		FixedVersion   func(childComplexity int) int
 		Origin         func(childComplexity int) int
 		ScannerURI     func(childComplexity int) int
 		ScannerVersion func(childComplexity int) int
+		Severity       func(childComplexity int) int
+		Summary        func(childComplexity int) int
 		TimeScanned    func(childComplexity int) int
+		Vulnerability  func(childComplexity int) int
 	}
 }
 
@@ -1278,6 +1284,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PackageQualifier.Value(childComplexity), true
 
+	case "PackageVersion.applicationId":
+		if e.complexity.PackageVersion.ApplicationID == nil {
+			break
+		}
+
+		return e.complexity.PackageVersion.ApplicationID(childComplexity), true
+
 	case "PackageVersion.id":
 		if e.complexity.PackageVersion.ID == nil {
 			break
@@ -1860,6 +1873,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.VulnerabilityMetaData.DbVersion(childComplexity), true
 
+	case "VulnerabilityMetaData.details":
+		if e.complexity.VulnerabilityMetaData.Details == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.Details(childComplexity), true
+
+	case "VulnerabilityMetaData.fixedVersion":
+		if e.complexity.VulnerabilityMetaData.FixedVersion == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.FixedVersion(childComplexity), true
+
 	case "VulnerabilityMetaData.origin":
 		if e.complexity.VulnerabilityMetaData.Origin == nil {
 			break
@@ -1881,12 +1908,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.VulnerabilityMetaData.ScannerVersion(childComplexity), true
 
+	case "VulnerabilityMetaData.severity":
+		if e.complexity.VulnerabilityMetaData.Severity == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.Severity(childComplexity), true
+
+	case "VulnerabilityMetaData.summary":
+		if e.complexity.VulnerabilityMetaData.Summary == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.Summary(childComplexity), true
+
 	case "VulnerabilityMetaData.timeScanned":
 		if e.complexity.VulnerabilityMetaData.TimeScanned == nil {
 			break
 		}
 
 		return e.complexity.VulnerabilityMetaData.TimeScanned(childComplexity), true
+
+	case "VulnerabilityMetaData.vulnerability":
+		if e.complexity.VulnerabilityMetaData.Vulnerability == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.Vulnerability(childComplexity), true
 
 	}
 	return 0, false
@@ -2692,6 +2740,17 @@ type VulnerabilityMetaData {
   origin: String!
   "GUAC collector for the document"
   collector: String!
+  "Details of Vulnerability"
+  details: String
+  "Summary of Vulnerability"
+  summary: String
+  "CVE of Vulnerability"
+  vulnerability: String
+  "Severity of Vulnerability"
+  severity: String
+  "Fixed Version of Vulnerability"
+  fixedVersion: String
+  
 }
 
 """
@@ -2715,6 +2774,7 @@ input CertifyVulnSpec {
   scannerVersion: String
   origin: String
   collector: String
+  severity: String
 }
 
 """
@@ -3653,6 +3713,7 @@ the trie.
 type PackageVersion {
   id: ID!
   version: String!
+  applicationId: [String!]
   qualifiers: [PackageQualifier!]!
   subpath: String!
 }
@@ -3696,6 +3757,7 @@ input PkgSpec {
   qualifiers: [PackageQualifierSpec!] = []
   matchOnlyEmptyQualifiers: Boolean = false
   subpath: String
+  applicationId: [String!] = []
 }
 
 """
@@ -3723,6 +3785,7 @@ input PkgInputSpec {
   namespace: String = ""
   name: String!
   version: String = ""
+  applicationId: [String!] = []
   qualifiers: [PackageQualifierInputSpec!] = []
   subpath: String = ""
 }

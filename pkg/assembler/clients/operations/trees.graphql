@@ -30,6 +30,7 @@ fragment AllPkgTree on Package {
       name
       versions {
         id
+        applicationId
         version
         qualifiers {
           key
@@ -275,6 +276,11 @@ fragment AllCertifyVuln on CertifyVuln {
     timeScanned
     origin
     collector
+    details
+    summary
+    vulnerability
+    severity
+    fixedVersion
   }
 }
 

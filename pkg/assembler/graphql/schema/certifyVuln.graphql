@@ -99,6 +99,17 @@ type VulnerabilityMetaData {
   origin: String!
   "GUAC collector for the document"
   collector: String!
+  "Details of Vulnerability"
+  details: String
+  "Summary of Vulnerability"
+  summary: String
+  "CVE of Vulnerability"
+  vulnerability: String
+  "Severity of Vulnerability"
+  severity: String
+  "Fixed Version of Vulnerability"
+  fixedVersion: String
+  
 }
 
 """
@@ -122,6 +133,7 @@ input CertifyVulnSpec {
   scannerVersion: String
   origin: String
   collector: String
+  severity: String
 }
 
 """

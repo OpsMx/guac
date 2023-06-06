@@ -17,7 +17,11 @@ package inmem
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -42,6 +46,11 @@ type vulnerabilityLink struct {
 	scannerVersion string
 	origin         string
 	collector      string
+	details        string
+	summary        string
+	vulnerability  string
+	severity       string
+	fixedVersion   string
 }
 
 func (n *vulnerabilityLink) ID() uint32 { return n.id }
@@ -102,6 +111,8 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 	var foundGhsaNode *ghsaNode
 	var noKnownVulnID uint32
 	var vulnerabilityLinks []uint32
+	vulnerabilityString := ""
+
 	if vulnerability.Osv != nil {
 		osvID, err = getOsvIDFromInput(c, *vulnerability.Osv)
 		if err != nil {
@@ -112,6 +123,7 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			return nil, gqlerror.Errorf("%v ::  %s", funcName, err)
 		}
 		vulnerabilityLinks = foundOsvNode.certifyVulnLinks
+		vulnerabilityString = foundOsvNode.osvID
 	} else if vulnerability.Cve != nil {
 		cveID, err = getCveIDFromInput(c, *vulnerability.Cve)
 		if err != nil {
@@ -122,6 +134,7 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			return nil, gqlerror.Errorf("%v ::  %s", funcName, err)
 		}
 		vulnerabilityLinks = foundCveNode.certifyVulnLinks
+		vulnerabilityString = foundCveNode.cveID
 	} else if vulnerability.Ghsa != nil {
 		ghsaID, err = getGhsaIDFromInput(c, *vulnerability.Ghsa)
 		if err != nil {
@@ -132,10 +145,18 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			return nil, gqlerror.Errorf("%v ::  %s", funcName, err)
 		}
 		vulnerabilityLinks = foundGhsaNode.certifyVulnLinks
+		vulnerabilityString = foundGhsaNode.ghsaID
 	} else {
 		noKnownVulnID = c.noKnownVulnNode.id
 		vulnerabilityLinks = c.noKnownVulnNode.certifyVulnLinks
 	}
+
+	customVulnerabilityDetails, err := getCustomVulnerabilityDetails(vulnerabilityString)
+	if err != nil {
+		return nil, gqlerror.Errorf("%v ::  %s", funcName, err)
+	}
+
+	fixedVersion := getFixedVersion(customVulnerabilityDetails, foundPackage.version)
 
 	var searchIDs []uint32
 	if len(packageVulns) < len(vulnerabilityLinks) {
@@ -197,6 +218,11 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			scannerVersion: certifyVuln.ScannerVersion,
 			origin:         certifyVuln.Origin,
 			collector:      certifyVuln.Collector,
+			summary:        customVulnerabilityDetails.Summary,
+			details:        customVulnerabilityDetails.Details,
+			vulnerability:  customVulnerabilityDetails.Aliases[0],
+			severity:       customVulnerabilityDetails.DataBaseSpecific.Severity,
+			fixedVersion:   fixedVersion,
 		}
 		c.index[collectedCertifyVulnLink.id] = &collectedCertifyVulnLink
 		c.vulnerabilities = append(c.vulnerabilities, &collectedCertifyVulnLink)
@@ -332,7 +358,7 @@ func (c *demoClient) CertifyVuln(ctx context.Context, filter *model.CertifyVulnS
 func (c *demoClient) addCVIfMatch(out []*model.CertifyVuln,
 	filter *model.CertifyVulnSpec,
 	link *vulnerabilityLink) ([]*model.CertifyVuln, error) {
-	if filter != nil && filter.TimeScanned != nil && filter.TimeScanned.Equal(link.timeScanned) {
+	if filter != nil && filter.TimeScanned != nil && filter.TimeScanned.After(link.timeScanned) {
 		return out, nil
 	}
 	if filter != nil && noMatch(filter.DbURI, link.dbURI) {
@@ -351,6 +377,9 @@ func (c *demoClient) addCVIfMatch(out []*model.CertifyVuln,
 		return out, nil
 	}
 	if filter != nil && noMatch(filter.Origin, link.origin) {
+		return out, nil
+	}
+	if filter != nil && filter.Severity != nil && noMatch(filter.Severity, link.severity) {
 		return out, nil
 	}
 
@@ -478,6 +507,11 @@ func (c *demoClient) buildCertifyVulnerability(link *vulnerabilityLink, filter *
 		ScannerVersion: link.scannerVersion,
 		Origin:         link.origin,
 		Collector:      link.collector,
+		Details:        &link.details,
+		Summary:        &link.summary,
+		Vulnerability:  &link.vulnerability,
+		Severity:       &link.severity,
+		FixedVersion:   &link.fixedVersion,
 	}
 
 	certifyVuln := model.CertifyVuln{
@@ -487,4 +521,109 @@ func (c *demoClient) buildCertifyVulnerability(link *vulnerabilityLink, filter *
 		Metadata:      metadata,
 	}
 	return &certifyVuln, nil
+}
+
+type OSVApiVulnerability struct {
+	Summary          string   `json:"summary,omitempty" yaml:"summary,omitempty"`
+	Details          string   `json:"details,omitempty" yaml:"details,omitempty"`
+	Aliases          []string `json:"aliases,omitempty" yaml:"aliases,omitempty"`
+	DataBaseSpecific struct {
+		Severity string `json:"severity,omitempty" yaml:"severity,omitempty"`
+	} `json:"database_specific,omitempty" yaml:"database_specific,omitempty"`
+	Modified time.Time `json:"modified,omitempty" yaml:"modified,omitempty"`
+	Affected []struct {
+		Versions []string `json:"versions,omitempty" yaml:"versions,omitempty"`
+		Ranges   []struct {
+			Events []struct {
+				Fixed string `json:"fixed,omitempty" yaml:"fixed,omitempty"`
+			} `json:"events,omitempty" yaml:"events,omitempty"`
+		} `json:"ranges,omitempty" yaml:"ranges,omitempty"`
+	} `json:"affected,omitempty" yaml:"affected,omitempty"`
+}
+
+func capitalizeFirstPart(input string) string {
+	parts := strings.SplitN(input, "-", 2)
+	if len(parts) >= 1 {
+		parts[0] = strings.ToUpper(parts[0])
+	}
+	return strings.Join(parts, "-")
+}
+
+func getCustomVulnerabilityDetails(vulnerabilityString string) (OSVApiVulnerability, error) {
+
+	url := fmt.Sprintf("https://api.osv.dev/v1/vulns/%s", capitalizeFirstPart(vulnerabilityString))
+	resp, err := http.Get(url)
+	if err != nil {
+		return OSVApiVulnerability{}, err
+	}
+	defer resp.Body.Close()
+
+	var vulnerabilityData OSVApiVulnerability
+	err = json.NewDecoder(resp.Body).Decode(&vulnerabilityData)
+	if err != nil {
+		return OSVApiVulnerability{}, err
+	}
+
+	if len(vulnerabilityData.Aliases) == 1 {
+		return vulnerabilityData, nil
+	}
+
+	if len(vulnerabilityData.Aliases) == 0 {
+		vulnerabilityData.Aliases = append(vulnerabilityData.Aliases, vulnerabilityString)
+		return vulnerabilityData, nil
+	}
+
+	for _, val := range vulnerabilityData.Aliases {
+
+		if strings.Contains(strings.ToLower(val), "cve") {
+			continue
+		}
+
+		url := fmt.Sprintf("https://api.osv.dev/v1/vulns/%s", val)
+		resp, err := http.Get(url)
+		if err != nil {
+			return OSVApiVulnerability{}, err
+		}
+		defer resp.Body.Close()
+
+		var newVulnerabilityData OSVApiVulnerability
+		err = json.NewDecoder(resp.Body).Decode(&newVulnerabilityData)
+		if err != nil {
+			return OSVApiVulnerability{}, err
+		}
+
+		if len(newVulnerabilityData.Aliases) == 1 && strings.Contains(strings.ToLower(newVulnerabilityData.Aliases[0]), "cve") {
+			return newVulnerabilityData, nil
+		}
+	}
+
+	return vulnerabilityData, nil
+
+}
+
+func containsElement(versions []string, target string) bool {
+	for _, v := range versions {
+		if v == target {
+			return true
+		}
+	}
+	return false
+}
+
+func getFixedVersion(osvData OSVApiVulnerability, pkgVersion string) string {
+	if pkgVersion == "" {
+		return ""
+	}
+	for i := range osvData.Affected {
+		if containsElement(osvData.Affected[i].Versions, pkgVersion) {
+			for _, ranges := range osvData.Affected[i].Ranges {
+				for _, event := range ranges.Events {
+					if event.Fixed != "" {
+						return event.Fixed
+					}
+				}
+			}
+		}
+	}
+	return "No Fixed Version"
 }

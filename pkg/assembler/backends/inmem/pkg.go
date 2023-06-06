@@ -107,6 +107,7 @@ type pkgVersionStruct struct {
 type pkgVersionList []*pkgVersionNode
 type pkgVersionNode struct {
 	id                uint32
+	applicationId     []string
 	parent            uint32
 	version           string
 	subpath           string
@@ -273,6 +274,15 @@ func (p *pkgVersionNode) getCertifyGoodLinks() []uint32   { return p.goodLinks }
 // pkgEqual back edges
 func (p *pkgVersionNode) setPkgEquals(id uint32) { p.pkgEquals = append(p.pkgEquals, id) }
 
+func contains(list []string, target string) bool {
+	for _, item := range list {
+		if item == target {
+			return true
+		}
+	}
+	return false
+}
+
 // Ingest Package
 func (c *demoClient) IngestPackage(ctx context.Context, input model.PkgInputSpec) (*model.Package, error) {
 	c.m.RLock()
@@ -333,6 +343,7 @@ func (c *demoClient) IngestPackage(ctx context.Context, input model.PkgInputSpec
 		c.m.Unlock()
 	}
 
+	updated := false
 	c.m.RLock()
 	duplicate, collectedVersion := duplicatePkgVer(versionStruct.versions, input)
 	c.m.RUnlock()
@@ -347,11 +358,22 @@ func (c *demoClient) IngestPackage(ctx context.Context, input model.PkgInputSpec
 				subpath:    nilToEmpty(input.Subpath),
 				qualifiers: getQualifiersFromInput(input.Qualifiers),
 			}
-			c.index[collectedVersion.id] = collectedVersion
+			updated = true
 			// Need to append to version and replace field in versionStruct
 			versionStruct.versions = append(versionStruct.versions, collectedVersion)
 		}
 		c.m.Unlock()
+	}
+
+	for i := range input.ApplicationID {
+		if !contains(collectedVersion.applicationId, input.ApplicationID[i]) {
+			collectedVersion.applicationId = append(collectedVersion.applicationId, input.ApplicationID[i])
+			updated = true
+		}
+	}
+
+	if updated {
+		c.index[collectedVersion.id] = collectedVersion
 	}
 
 	// build return GraphQL type
@@ -494,11 +516,15 @@ func buildPkgVersion(pkgVersionStruct *pkgVersionStruct, filter *model.PkgSpec) 
 		if filter != nil && noMatchQualifiers(filter, v.qualifiers) {
 			continue
 		}
+		if filter != nil && noMatchApplicationId(filter, v.applicationId) {
+			continue
+		}
 		pvs = append(pvs, &model.PackageVersion{
-			ID:         nodeID(v.id),
-			Version:    v.version,
-			Subpath:    v.subpath,
-			Qualifiers: getCollectedPackageQualifiers(v.qualifiers),
+			ID:            nodeID(v.id),
+			ApplicationID: v.applicationId,
+			Version:       v.version,
+			Subpath:       v.subpath,
+			Qualifiers:    getCollectedPackageQualifiers(v.qualifiers),
 		})
 	}
 	return pvs
@@ -534,10 +560,11 @@ func (c *demoClient) buildPackageResponse(id uint32, filter *model.PkgSpec) (*mo
 			return nil, nil
 		}
 		pvl = append(pvl, &model.PackageVersion{
-			ID:         nodeID(versionNode.id),
-			Version:    versionNode.version,
-			Subpath:    versionNode.subpath,
-			Qualifiers: getCollectedPackageQualifiers(versionNode.qualifiers),
+			ID:            nodeID(versionNode.id),
+			ApplicationID: versionNode.applicationId,
+			Version:       versionNode.version,
+			Subpath:       versionNode.subpath,
+			Qualifiers:    getCollectedPackageQualifiers(versionNode.qualifiers),
 		})
 		node, ok = c.index[versionNode.parent]
 		if !ok {
@@ -678,6 +705,18 @@ func noMatchQualifiers(filter *model.PkgSpec, v map[string]string) bool {
 	if filter.Qualifiers != nil && len(filter.Qualifiers) > 0 {
 		filterQualifiers := getQualifiersFromFilter(filter.Qualifiers)
 		return !reflect.DeepEqual(v, filterQualifiers)
+	}
+	return false
+}
+
+func noMatchApplicationId(filter *model.PkgSpec, appIds []string) bool {
+	if filter.ApplicationID != nil && len(filter.ApplicationID) > 0 {
+		for i := range filter.ApplicationID {
+			if containsElement(appIds, filter.ApplicationID[i]) {
+				return false
+			}
+		}
+		return true
 	}
 	return false
 }
