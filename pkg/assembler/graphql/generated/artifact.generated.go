@@ -36,6 +36,7 @@ type MutationResolver interface {
 	IngestDependency(ctx context.Context, pkg model.PkgInputSpec, depPkg model.PkgInputSpec, dependency model.IsDependencyInputSpec) (*model.IsDependency, error)
 	IngestOccurrence(ctx context.Context, subject model.PackageOrSourceInput, artifact model.ArtifactInputSpec, occurrence model.IsOccurrenceInputSpec) (*model.IsOccurrence, error)
 	IngestIsVulnerability(ctx context.Context, osv model.OSVInputSpec, vulnerability model.CveOrGhsaInput, isVulnerability model.IsVulnerabilityInputSpec) (*model.IsVulnerability, error)
+	IngestJenkins(ctx context.Context, jenkins model.JenkinsInputSpec) (*model.Jenkins, error)
 	IngestOsv(ctx context.Context, osv *model.OSVInputSpec) (*model.Osv, error)
 	IngestPackage(ctx context.Context, pkg model.PkgInputSpec) (*model.Package, error)
 	IngestPkgEqual(ctx context.Context, pkg model.PkgInputSpec, otherPackage model.PkgInputSpec, pkgEqual model.PkgEqualInputSpec) (*model.PkgEqual, error)
@@ -58,6 +59,7 @@ type QueryResolver interface {
 	IsDependency(ctx context.Context, isDependencySpec *model.IsDependencySpec) ([]*model.IsDependency, error)
 	IsOccurrence(ctx context.Context, isOccurrenceSpec *model.IsOccurrenceSpec) ([]*model.IsOccurrence, error)
 	IsVulnerability(ctx context.Context, isVulnerabilitySpec *model.IsVulnerabilitySpec) ([]*model.IsVulnerability, error)
+	Jenkins(ctx context.Context, jenkinsSpec *model.JenkinsSpec) ([]*model.Jenkins, error)
 	Osv(ctx context.Context, osvSpec *model.OSVSpec) ([]*model.Osv, error)
 	Packages(ctx context.Context, pkgSpec *model.PkgSpec) ([]*model.Package, error)
 	Path(ctx context.Context, subject string, target string, maxPathLength int, usingOnly []model.Edge) ([]model.Node, error)
@@ -384,6 +386,21 @@ func (ec *executionContext) field_Mutation_ingestIsVulnerability_args(ctx contex
 		}
 	}
 	args["isVulnerability"] = arg2
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_ingestJenkins_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.JenkinsInputSpec
+	if tmp, ok := rawArgs["jenkins"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("jenkins"))
+		arg0, err = ec.unmarshalNJenkinsInputSpec2githubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐJenkinsInputSpec(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["jenkins"] = arg0
 	return args, nil
 }
 
@@ -873,6 +890,21 @@ func (ec *executionContext) field_Query_ghsa_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["ghsaSpec"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_jenkins_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *model.JenkinsSpec
+	if tmp, ok := rawArgs["jenkinsSpec"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("jenkinsSpec"))
+		arg0, err = ec.unmarshalOJenkinsSpec2ᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐJenkinsSpec(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["jenkinsSpec"] = arg0
 	return args, nil
 }
 
@@ -2309,6 +2341,79 @@ func (ec *executionContext) fieldContext_Mutation_ingestIsVulnerability(ctx cont
 	return fc, nil
 }
 
+func (ec *executionContext) _Mutation_ingestJenkins(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_ingestJenkins(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().IngestJenkins(rctx, fc.Args["jenkins"].(model.JenkinsInputSpec))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Jenkins)
+	fc.Result = res
+	return ec.marshalNJenkins2ᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐJenkins(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_ingestJenkins(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Jenkins_id(ctx, field)
+			case "image":
+				return ec.fieldContext_Jenkins_image(ctx, field)
+			case "jobName":
+				return ec.fieldContext_Jenkins_jobName(ctx, field)
+			case "buildNumber":
+				return ec.fieldContext_Jenkins_buildNumber(ctx, field)
+			case "gitUrl":
+				return ec.fieldContext_Jenkins_gitUrl(ctx, field)
+			case "gitCommit":
+				return ec.fieldContext_Jenkins_gitCommit(ctx, field)
+			case "gitCommitDiff":
+				return ec.fieldContext_Jenkins_gitCommitDiff(ctx, field)
+			case "jobUrl":
+				return ec.fieldContext_Jenkins_jobUrl(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Jenkins", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_ingestJenkins_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation_ingestOSV(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation_ingestOSV(ctx, field)
 	if err != nil {
@@ -3637,6 +3742,79 @@ func (ec *executionContext) fieldContext_Query_IsVulnerability(ctx context.Conte
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_jenkins(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_jenkins(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Jenkins(rctx, fc.Args["jenkinsSpec"].(*model.JenkinsSpec))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Jenkins)
+	fc.Result = res
+	return ec.marshalNJenkins2ᚕᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐJenkinsᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_jenkins(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Jenkins_id(ctx, field)
+			case "image":
+				return ec.fieldContext_Jenkins_image(ctx, field)
+			case "jobName":
+				return ec.fieldContext_Jenkins_jobName(ctx, field)
+			case "buildNumber":
+				return ec.fieldContext_Jenkins_buildNumber(ctx, field)
+			case "gitUrl":
+				return ec.fieldContext_Jenkins_gitUrl(ctx, field)
+			case "gitCommit":
+				return ec.fieldContext_Jenkins_gitCommit(ctx, field)
+			case "gitCommitDiff":
+				return ec.fieldContext_Jenkins_gitCommitDiff(ctx, field)
+			case "jobUrl":
+				return ec.fieldContext_Jenkins_jobUrl(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Jenkins", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_jenkins_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query_osv(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query_osv(ctx, field)
 	if err != nil {
@@ -4551,6 +4729,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "ingestJenkins":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_ingestJenkins(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "ingestOSV":
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
@@ -4972,6 +5159,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_IsVulnerability(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx, innerFunc)
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return rrm(innerCtx)
+			})
+		case "jenkins":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_jenkins(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

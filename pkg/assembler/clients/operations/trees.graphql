@@ -30,7 +30,12 @@ fragment AllPkgTree on Package {
       name
       versions {
         id
-        applicationId
+        applicationDetails{
+          applicationId
+          application
+          owner
+          deploymentDate
+        }
         version
         qualifiers {
           key

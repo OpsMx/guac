@@ -1932,11 +1932,11 @@ func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageName) GetVersions() []A
 // are a subset of the qualifier of the other also mean two different packages in
 // the trie.
 type AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion struct {
-	Id            string                                                                                                 `json:"id"`
-	ApplicationId []string                                                                                               `json:"applicationId"`
-	Version       string                                                                                                 `json:"version"`
-	Qualifiers    []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionQualifiersPackageQualifier `json:"qualifiers"`
-	Subpath       string                                                                                                 `json:"subpath"`
+	Id                 string                                                                                                 `json:"id"`
+	ApplicationDetails []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails         `json:"applicationDetails"`
+	Version            string                                                                                                 `json:"version"`
+	Qualifiers         []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionQualifiersPackageQualifier `json:"qualifiers"`
+	Subpath            string                                                                                                 `json:"subpath"`
 }
 
 // GetId returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.Id, and is useful for accessing the field via an interface.
@@ -1944,9 +1944,9 @@ func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVers
 	return v.Id
 }
 
-// GetApplicationId returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.ApplicationId, and is useful for accessing the field via an interface.
-func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion) GetApplicationId() []string {
-	return v.ApplicationId
+// GetApplicationDetails returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.ApplicationDetails, and is useful for accessing the field via an interface.
+func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion) GetApplicationDetails() []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails {
+	return v.ApplicationDetails
 }
 
 // GetVersion returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.Version, and is useful for accessing the field via an interface.
@@ -1962,6 +1962,34 @@ func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVers
 // GetSubpath returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.Subpath, and is useful for accessing the field via an interface.
 func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion) GetSubpath() string {
 	return v.Subpath
+}
+
+// AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails includes the requested fields of the GraphQL type ApplicationDetails.
+type AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails struct {
+	ApplicationId  *string    `json:"applicationId"`
+	Application    *string    `json:"application"`
+	Owner          *string    `json:"owner"`
+	DeploymentDate *time.Time `json:"deploymentDate"`
+}
+
+// GetApplicationId returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails.ApplicationId, and is useful for accessing the field via an interface.
+func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails) GetApplicationId() *string {
+	return v.ApplicationId
+}
+
+// GetApplication returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails.Application, and is useful for accessing the field via an interface.
+func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails) GetApplication() *string {
+	return v.Application
+}
+
+// GetOwner returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails.Owner, and is useful for accessing the field via an interface.
+func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails) GetOwner() *string {
+	return v.Owner
+}
+
+// GetDeploymentDate returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails.DeploymentDate, and is useful for accessing the field via an interface.
+func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionApplicationDetails) GetDeploymentDate() *time.Time {
+	return v.DeploymentDate
 }
 
 // AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionQualifiersPackageQualifier includes the requested fields of the GraphQL type PackageQualifier.
@@ -8951,6 +8979,14 @@ func (v *NeighborsNeighborsIsVulnerability) __premarshalJSON() (*__premarshalNei
 	return &retval, nil
 }
 
+// NeighborsNeighborsJenkins includes the requested fields of the GraphQL type Jenkins.
+type NeighborsNeighborsJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NeighborsNeighborsJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NeighborsNeighborsJenkins) GetTypename() *string { return v.Typename }
+
 // NeighborsNeighborsNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -8988,6 +9024,7 @@ func (v *NeighborsNeighborsNoVuln) GetId() string { return v.Id }
 // NeighborsNeighborsIsDependency
 // NeighborsNeighborsIsOccurrence
 // NeighborsNeighborsIsVulnerability
+// NeighborsNeighborsJenkins
 // NeighborsNeighborsNoVuln
 // NeighborsNeighborsOSV
 // NeighborsNeighborsPackage
@@ -9022,6 +9059,7 @@ func (v *NeighborsNeighborsHashEqual) implementsGraphQLInterfaceNeighborsNeighbo
 func (v *NeighborsNeighborsIsDependency) implementsGraphQLInterfaceNeighborsNeighborsNode()        {}
 func (v *NeighborsNeighborsIsOccurrence) implementsGraphQLInterfaceNeighborsNeighborsNode()        {}
 func (v *NeighborsNeighborsIsVulnerability) implementsGraphQLInterfaceNeighborsNeighborsNode()     {}
+func (v *NeighborsNeighborsJenkins) implementsGraphQLInterfaceNeighborsNeighborsNode()             {}
 func (v *NeighborsNeighborsNoVuln) implementsGraphQLInterfaceNeighborsNeighborsNode()              {}
 func (v *NeighborsNeighborsOSV) implementsGraphQLInterfaceNeighborsNeighborsNode()                 {}
 func (v *NeighborsNeighborsPackage) implementsGraphQLInterfaceNeighborsNeighborsNode()             {}
@@ -9089,6 +9127,9 @@ func __unmarshalNeighborsNeighborsNode(b []byte, v *NeighborsNeighborsNode) erro
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NeighborsNeighborsIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NeighborsNeighborsJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NeighborsNeighborsNoVuln)
@@ -9309,6 +9350,14 @@ func __marshalNeighborsNeighborsNode(v *NeighborsNeighborsNode) ([]byte, error) 
 			TypeName string `json:"__typename"`
 			*__premarshalNeighborsNeighborsIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NeighborsNeighborsJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NeighborsNeighborsJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NeighborsNeighborsNoVuln:
 		typename = "NoVuln"
@@ -9820,6 +9869,7 @@ func (v *NeighborsResponse) __premarshalJSON() (*__premarshalNeighborsResponse, 
 // NodeNodeIsDependency
 // NodeNodeIsOccurrence
 // NodeNodeIsVulnerability
+// NodeNodeJenkins
 // NodeNodeNoVuln
 // NodeNodeOSV
 // NodeNodePackage
@@ -9854,6 +9904,7 @@ func (v *NodeNodeHashEqual) implementsGraphQLInterfaceNodeNode()           {}
 func (v *NodeNodeIsDependency) implementsGraphQLInterfaceNodeNode()        {}
 func (v *NodeNodeIsOccurrence) implementsGraphQLInterfaceNodeNode()        {}
 func (v *NodeNodeIsVulnerability) implementsGraphQLInterfaceNodeNode()     {}
+func (v *NodeNodeJenkins) implementsGraphQLInterfaceNodeNode()             {}
 func (v *NodeNodeNoVuln) implementsGraphQLInterfaceNodeNode()              {}
 func (v *NodeNodeOSV) implementsGraphQLInterfaceNodeNode()                 {}
 func (v *NodeNodePackage) implementsGraphQLInterfaceNodeNode()             {}
@@ -9921,6 +9972,9 @@ func __unmarshalNodeNode(b []byte, v *NodeNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NodeNodeIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NodeNodeJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NodeNodeNoVuln)
@@ -10141,6 +10195,14 @@ func __marshalNodeNode(v *NodeNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalNodeNodeIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NodeNodeJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NodeNodeJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NodeNodeNoVuln:
 		typename = "NoVuln"
@@ -11766,6 +11828,14 @@ func (v *NodeNodeIsVulnerability) __premarshalJSON() (*__premarshalNodeNodeIsVul
 	retval.Collector = v.allIsVulnerability.Collector
 	return &retval, nil
 }
+
+// NodeNodeJenkins includes the requested fields of the GraphQL type Jenkins.
+type NodeNodeJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NodeNodeJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NodeNodeJenkins) GetTypename() *string { return v.Typename }
 
 // NodeNodeNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
@@ -13762,6 +13832,14 @@ func (v *NodesNodesIsVulnerability) __premarshalJSON() (*__premarshalNodesNodesI
 	return &retval, nil
 }
 
+// NodesNodesJenkins includes the requested fields of the GraphQL type Jenkins.
+type NodesNodesJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NodesNodesJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NodesNodesJenkins) GetTypename() *string { return v.Typename }
+
 // NodesNodesNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -13799,6 +13877,7 @@ func (v *NodesNodesNoVuln) GetId() string { return v.Id }
 // NodesNodesIsDependency
 // NodesNodesIsOccurrence
 // NodesNodesIsVulnerability
+// NodesNodesJenkins
 // NodesNodesNoVuln
 // NodesNodesOSV
 // NodesNodesPackage
@@ -13833,6 +13912,7 @@ func (v *NodesNodesHashEqual) implementsGraphQLInterfaceNodesNodesNode()        
 func (v *NodesNodesIsDependency) implementsGraphQLInterfaceNodesNodesNode()        {}
 func (v *NodesNodesIsOccurrence) implementsGraphQLInterfaceNodesNodesNode()        {}
 func (v *NodesNodesIsVulnerability) implementsGraphQLInterfaceNodesNodesNode()     {}
+func (v *NodesNodesJenkins) implementsGraphQLInterfaceNodesNodesNode()             {}
 func (v *NodesNodesNoVuln) implementsGraphQLInterfaceNodesNodesNode()              {}
 func (v *NodesNodesOSV) implementsGraphQLInterfaceNodesNodesNode()                 {}
 func (v *NodesNodesPackage) implementsGraphQLInterfaceNodesNodesNode()             {}
@@ -13900,6 +13980,9 @@ func __unmarshalNodesNodesNode(b []byte, v *NodesNodesNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NodesNodesIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NodesNodesJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NodesNodesNoVuln)
@@ -14120,6 +14203,14 @@ func __marshalNodesNodesNode(v *NodesNodesNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalNodesNodesIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NodesNodesJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NodesNodesJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NodesNodesNoVuln:
 		typename = "NoVuln"
@@ -16407,6 +16498,14 @@ func (v *PathPathIsVulnerability) __premarshalJSON() (*__premarshalPathPathIsVul
 	return &retval, nil
 }
 
+// PathPathJenkins includes the requested fields of the GraphQL type Jenkins.
+type PathPathJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns PathPathJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *PathPathJenkins) GetTypename() *string { return v.Typename }
+
 // PathPathNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -16444,6 +16543,7 @@ func (v *PathPathNoVuln) GetId() string { return v.Id }
 // PathPathIsDependency
 // PathPathIsOccurrence
 // PathPathIsVulnerability
+// PathPathJenkins
 // PathPathNoVuln
 // PathPathOSV
 // PathPathPackage
@@ -16478,6 +16578,7 @@ func (v *PathPathHashEqual) implementsGraphQLInterfacePathPathNode()           {
 func (v *PathPathIsDependency) implementsGraphQLInterfacePathPathNode()        {}
 func (v *PathPathIsOccurrence) implementsGraphQLInterfacePathPathNode()        {}
 func (v *PathPathIsVulnerability) implementsGraphQLInterfacePathPathNode()     {}
+func (v *PathPathJenkins) implementsGraphQLInterfacePathPathNode()             {}
 func (v *PathPathNoVuln) implementsGraphQLInterfacePathPathNode()              {}
 func (v *PathPathOSV) implementsGraphQLInterfacePathPathNode()                 {}
 func (v *PathPathPackage) implementsGraphQLInterfacePathPathNode()             {}
@@ -16545,6 +16646,9 @@ func __unmarshalPathPathNode(b []byte, v *PathPathNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(PathPathIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(PathPathJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(PathPathNoVuln)
@@ -16765,6 +16869,14 @@ func __marshalPathPathNode(v *PathPathNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalPathPathIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *PathPathJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*PathPathJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *PathPathNoVuln:
 		typename = "NoVuln"
@@ -17541,13 +17653,16 @@ func (v *PkgEqualResponse) GetIngestPkgEqual() PkgEqualIngestPkgEqual { return v
 // This is different than PkgSpec because we want to encode mandatory fields:
 // type and name. All optional fields are given empty default values.
 type PkgInputSpec struct {
-	Type          string                      `json:"type"`
-	Namespace     *string                     `json:"namespace"`
-	Name          string                      `json:"name"`
-	Version       *string                     `json:"version"`
-	ApplicationId []string                    `json:"applicationId"`
-	Qualifiers    []PackageQualifierInputSpec `json:"qualifiers"`
-	Subpath       *string                     `json:"subpath"`
+	Type           string                      `json:"type"`
+	Namespace      *string                     `json:"namespace"`
+	Name           string                      `json:"name"`
+	Version        *string                     `json:"version"`
+	ApplicationId  *string                     `json:"applicationId"`
+	Application    *string                     `json:"application"`
+	Owner          *string                     `json:"owner"`
+	DeploymentDate *time.Time                  `json:"deploymentDate"`
+	Qualifiers     []PackageQualifierInputSpec `json:"qualifiers"`
+	Subpath        *string                     `json:"subpath"`
 }
 
 // GetType returns PkgInputSpec.Type, and is useful for accessing the field via an interface.
@@ -17563,7 +17678,16 @@ func (v *PkgInputSpec) GetName() string { return v.Name }
 func (v *PkgInputSpec) GetVersion() *string { return v.Version }
 
 // GetApplicationId returns PkgInputSpec.ApplicationId, and is useful for accessing the field via an interface.
-func (v *PkgInputSpec) GetApplicationId() []string { return v.ApplicationId }
+func (v *PkgInputSpec) GetApplicationId() *string { return v.ApplicationId }
+
+// GetApplication returns PkgInputSpec.Application, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetApplication() *string { return v.Application }
+
+// GetOwner returns PkgInputSpec.Owner, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetOwner() *string { return v.Owner }
+
+// GetDeploymentDate returns PkgInputSpec.DeploymentDate, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetDeploymentDate() *time.Time { return v.DeploymentDate }
 
 // GetQualifiers returns PkgInputSpec.Qualifiers, and is useful for accessing the field via an interface.
 func (v *PkgInputSpec) GetQualifiers() []PackageQualifierInputSpec { return v.Qualifiers }
@@ -17601,7 +17725,10 @@ type PkgSpec struct {
 	Qualifiers               []PackageQualifierSpec `json:"qualifiers"`
 	MatchOnlyEmptyQualifiers *bool                  `json:"matchOnlyEmptyQualifiers"`
 	Subpath                  *string                `json:"subpath"`
-	ApplicationId            []string               `json:"applicationId"`
+	ApplicationId            *string                `json:"applicationId"`
+	Application              *string                `json:"application"`
+	Owner                    *string                `json:"owner"`
+	DeploymentDate           *time.Time             `json:"deploymentDate"`
 }
 
 // GetId returns PkgSpec.Id, and is useful for accessing the field via an interface.
@@ -17629,7 +17756,16 @@ func (v *PkgSpec) GetMatchOnlyEmptyQualifiers() *bool { return v.MatchOnlyEmptyQ
 func (v *PkgSpec) GetSubpath() *string { return v.Subpath }
 
 // GetApplicationId returns PkgSpec.ApplicationId, and is useful for accessing the field via an interface.
-func (v *PkgSpec) GetApplicationId() []string { return v.ApplicationId }
+func (v *PkgSpec) GetApplicationId() *string { return v.ApplicationId }
+
+// GetApplication returns PkgSpec.Application, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetApplication() *string { return v.Application }
+
+// GetOwner returns PkgSpec.Owner, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetOwner() *string { return v.Owner }
+
+// GetDeploymentDate returns PkgSpec.DeploymentDate, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetDeploymentDate() *time.Time { return v.DeploymentDate }
 
 // SLSAForArtifactIngestArtifact includes the requested fields of the GraphQL type Artifact.
 // The GraphQL type's documentation follows.
@@ -24003,7 +24139,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24079,7 +24220,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24212,7 +24358,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24294,7 +24445,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24376,7 +24532,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24491,7 +24652,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24626,7 +24792,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24702,7 +24873,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24835,7 +25011,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -24902,7 +25083,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25015,7 +25201,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25193,7 +25384,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25255,7 +25451,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25347,7 +25548,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25502,7 +25708,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25583,7 +25794,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -25724,7 +25940,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -26003,7 +26224,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -26412,7 +26638,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -26819,7 +27050,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -27199,7 +27435,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -27322,7 +27563,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -27675,7 +27921,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -27952,7 +28203,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -28109,7 +28365,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -28224,7 +28485,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -28340,7 +28606,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -28416,7 +28687,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key
@@ -28532,7 +28808,12 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
+				applicationDetails {
+					applicationId
+					application
+					owner
+					deploymentDate
+				}
 				version
 				qualifiers {
 					key

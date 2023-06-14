@@ -185,6 +185,13 @@ func (ec *executionContext) _Node(ctx context.Context, sel ast.SelectionSet, obj
 			return graphql.Null
 		}
 		return ec._HasSLSA(ctx, sel, obj)
+	case model.Jenkins:
+		return ec._Jenkins(ctx, sel, &obj)
+	case *model.Jenkins:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._Jenkins(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}

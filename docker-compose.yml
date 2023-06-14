@@ -50,7 +50,7 @@ services:
         # echo "neo4j-up";
 
   guac-collectsub:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guaccsub"
     working_dir: /guac
     restart: on-failure
@@ -63,7 +63,7 @@ services:
       - ./container_files/guac:/guac
 
   guac-graphql:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guacgql"
     working_dir: /guac
     restart: on-failure
@@ -96,7 +96,7 @@ services:
 
 
   guac-ingestor:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guacingest"
     working_dir: /guac
     restart: on-failure
@@ -108,7 +108,7 @@ services:
 
 
   oci-collector:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guaccollect image"
     working_dir: /guac
     restart: on-failure
@@ -118,7 +118,7 @@ services:
     volumes:
       - ./container_files/guac:/guac
   depsdev-collector:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guaccollect deps_dev"
     working_dir: /guac
     restart: on-failure
@@ -130,7 +130,7 @@ services:
     volumes:
       - ./container_files/guac:/guac
   osv-certifier:
-    image: "genos1998/guacy:v19"
+    image: "genos1998/guacy:v29"
     command: "/opt/guac/guacone certifier osv"
     working_dir: /guac
     restart: on-failure

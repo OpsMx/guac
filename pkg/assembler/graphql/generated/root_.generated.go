@@ -43,6 +43,13 @@ type ComplexityRoot struct {
 		Value func(childComplexity int) int
 	}
 
+	ApplicationDetails struct {
+		Application    func(childComplexity int) int
+		ApplicationID  func(childComplexity int) int
+		DeploymentDate func(childComplexity int) int
+		Owner          func(childComplexity int) int
+	}
+
 	Artifact struct {
 		Algorithm func(childComplexity int) int
 		Digest    func(childComplexity int) int
@@ -172,6 +179,17 @@ type ComplexityRoot struct {
 		Vulnerability func(childComplexity int) int
 	}
 
+	Jenkins struct {
+		BuildNumber   func(childComplexity int) int
+		GitCommit     func(childComplexity int) int
+		GitCommitDiff func(childComplexity int) int
+		GitURL        func(childComplexity int) int
+		ID            func(childComplexity int) int
+		Image         func(childComplexity int) int
+		JobName       func(childComplexity int) int
+		JobURL        func(childComplexity int) int
+	}
+
 	Mutation struct {
 		CertifyScorecard      func(childComplexity int, source model.SourceInputSpec, scorecard model.ScorecardInputSpec) int
 		IngestArtifact        func(childComplexity int, artifact *model.ArtifactInputSpec) int
@@ -185,6 +203,7 @@ type ComplexityRoot struct {
 		IngestHasSourceAt     func(childComplexity int, pkg model.PkgInputSpec, pkgMatchType model.MatchFlags, source model.SourceInputSpec, hasSourceAt model.HasSourceAtInputSpec) int
 		IngestHashEqual       func(childComplexity int, artifact model.ArtifactInputSpec, otherArtifact model.ArtifactInputSpec, hashEqual model.HashEqualInputSpec) int
 		IngestIsVulnerability func(childComplexity int, osv model.OSVInputSpec, vulnerability model.CveOrGhsaInput, isVulnerability model.IsVulnerabilityInputSpec) int
+		IngestJenkins         func(childComplexity int, jenkins model.JenkinsInputSpec) int
 		IngestMaterials       func(childComplexity int, materials []*model.ArtifactInputSpec) int
 		IngestOccurrence      func(childComplexity int, subject model.PackageOrSourceInput, artifact model.ArtifactInputSpec, occurrence model.IsOccurrenceInputSpec) int
 		IngestOsv             func(childComplexity int, osv *model.OSVInputSpec) int
@@ -229,11 +248,11 @@ type ComplexityRoot struct {
 	}
 
 	PackageVersion struct {
-		ApplicationID func(childComplexity int) int
-		ID            func(childComplexity int) int
-		Qualifiers    func(childComplexity int) int
-		Subpath       func(childComplexity int) int
-		Version       func(childComplexity int) int
+		ApplicationDetails func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		Qualifiers         func(childComplexity int) int
+		Subpath            func(childComplexity int) int
+		Version            func(childComplexity int) int
 	}
 
 	PkgEqual struct {
@@ -260,6 +279,7 @@ type ComplexityRoot struct {
 		IsDependency        func(childComplexity int, isDependencySpec *model.IsDependencySpec) int
 		IsOccurrence        func(childComplexity int, isOccurrenceSpec *model.IsOccurrenceSpec) int
 		IsVulnerability     func(childComplexity int, isVulnerabilitySpec *model.IsVulnerabilitySpec) int
+		Jenkins             func(childComplexity int, jenkinsSpec *model.JenkinsSpec) int
 		Neighbors           func(childComplexity int, node string, usingOnly []model.Edge) int
 		Node                func(childComplexity int, node string) int
 		Nodes               func(childComplexity int, nodes []string) int
@@ -366,6 +386,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Annotation.Value(childComplexity), true
+
+	case "ApplicationDetails.application":
+		if e.complexity.ApplicationDetails.Application == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.Application(childComplexity), true
+
+	case "ApplicationDetails.applicationId":
+		if e.complexity.ApplicationDetails.ApplicationID == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.ApplicationID(childComplexity), true
+
+	case "ApplicationDetails.deploymentDate":
+		if e.complexity.ApplicationDetails.DeploymentDate == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.DeploymentDate(childComplexity), true
+
+	case "ApplicationDetails.owner":
+		if e.complexity.ApplicationDetails.Owner == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.Owner(childComplexity), true
 
 	case "Artifact.algorithm":
 		if e.complexity.Artifact.Algorithm == nil {
@@ -934,6 +982,62 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.IsVulnerability.Vulnerability(childComplexity), true
 
+	case "Jenkins.buildNumber":
+		if e.complexity.Jenkins.BuildNumber == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.BuildNumber(childComplexity), true
+
+	case "Jenkins.gitCommit":
+		if e.complexity.Jenkins.GitCommit == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.GitCommit(childComplexity), true
+
+	case "Jenkins.gitCommitDiff":
+		if e.complexity.Jenkins.GitCommitDiff == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.GitCommitDiff(childComplexity), true
+
+	case "Jenkins.gitUrl":
+		if e.complexity.Jenkins.GitURL == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.GitURL(childComplexity), true
+
+	case "Jenkins.id":
+		if e.complexity.Jenkins.ID == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.ID(childComplexity), true
+
+	case "Jenkins.image":
+		if e.complexity.Jenkins.Image == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.Image(childComplexity), true
+
+	case "Jenkins.jobName":
+		if e.complexity.Jenkins.JobName == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.JobName(childComplexity), true
+
+	case "Jenkins.jobUrl":
+		if e.complexity.Jenkins.JobURL == nil {
+			break
+		}
+
+		return e.complexity.Jenkins.JobURL(childComplexity), true
+
 	case "Mutation.certifyScorecard":
 		if e.complexity.Mutation.CertifyScorecard == nil {
 			break
@@ -1077,6 +1181,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.IngestIsVulnerability(childComplexity, args["osv"].(model.OSVInputSpec), args["vulnerability"].(model.CveOrGhsaInput), args["isVulnerability"].(model.IsVulnerabilityInputSpec)), true
+
+	case "Mutation.ingestJenkins":
+		if e.complexity.Mutation.IngestJenkins == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_ingestJenkins_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.IngestJenkins(childComplexity, args["jenkins"].(model.JenkinsInputSpec)), true
 
 	case "Mutation.ingestMaterials":
 		if e.complexity.Mutation.IngestMaterials == nil {
@@ -1284,12 +1400,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PackageQualifier.Value(childComplexity), true
 
-	case "PackageVersion.applicationId":
-		if e.complexity.PackageVersion.ApplicationID == nil {
+	case "PackageVersion.applicationDetails":
+		if e.complexity.PackageVersion.ApplicationDetails == nil {
 			break
 		}
 
-		return e.complexity.PackageVersion.ApplicationID(childComplexity), true
+		return e.complexity.PackageVersion.ApplicationDetails(childComplexity), true
 
 	case "PackageVersion.id":
 		if e.complexity.PackageVersion.ID == nil {
@@ -1533,6 +1649,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.IsVulnerability(childComplexity, args["isVulnerabilitySpec"].(*model.IsVulnerabilitySpec)), true
+
+	case "Query.jenkins":
+		if e.complexity.Query.Jenkins == nil {
+			break
+		}
+
+		args, err := ec.field_Query_jenkins_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Jenkins(childComplexity, args["jenkinsSpec"].(*model.JenkinsSpec)), true
 
 	case "Query.neighbors":
 		if e.complexity.Query.Neighbors == nil {
@@ -1976,6 +2104,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputIsOccurrenceSpec,
 		ec.unmarshalInputIsVulnerabilityInputSpec,
 		ec.unmarshalInputIsVulnerabilitySpec,
+		ec.unmarshalInputJenkinsInputSpec,
+		ec.unmarshalInputJenkinsSpec,
 		ec.unmarshalInputMatchFlags,
 		ec.unmarshalInputOSVInputSpec,
 		ec.unmarshalInputOSVSpec,
@@ -3561,6 +3691,63 @@ extend type Mutation {
   ingestIsVulnerability(osv: OSVInputSpec!, vulnerability: CveOrGhsaInput!, isVulnerability: IsVulnerabilityInputSpec!): IsVulnerability!
 }
 `, BuiltIn: false},
+	{Name: "../schema/jenkins.graphql", Input: `#
+# Copyright 2023 The GUAC Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# NOTE: This is experimental and might change in the future!
+
+# Defines a GraphQL schema for the jenkins
+
+type Jenkins {
+  id: ID!
+  image: String!
+  jobName: String!
+  buildNumber: String!
+  gitUrl: String
+  gitCommit: String
+  gitCommitDiff: String
+  jobUrl: String
+}
+
+input JenkinsSpec {
+  id: ID
+  image: String
+  jobName: String
+  buildNumber: String
+}
+
+input JenkinsInputSpec {
+  image: String!
+  jobName: String!
+  buildNumber: String!
+  gitUrl: String
+  gitCommit: String
+  gitCommitDiff: String
+  jobUrl: String
+}
+
+extend type Query {
+  "Returns all jenkins matching a filter."
+  jenkins(jenkinsSpec: JenkinsSpec): [Jenkins!]!
+}
+
+extend type Mutation {
+  "Ingests a new jenkins and returns the corresponding jenkins trie path."
+  ingestJenkins(jenkins: JenkinsInputSpec!): Jenkins!
+}
+`, BuiltIn: false},
 	{Name: "../schema/osv.graphql", Input: `#
 # Copyright 2023 The GUAC Authors.
 #
@@ -3713,9 +3900,16 @@ the trie.
 type PackageVersion {
   id: ID!
   version: String!
-  applicationId: [String!]
+  applicationDetails: [ApplicationDetails!]
   qualifiers: [PackageQualifier!]!
   subpath: String!
+}
+
+type ApplicationDetails {
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time
 }
 
 """
@@ -3757,7 +3951,10 @@ input PkgSpec {
   qualifiers: [PackageQualifierSpec!] = []
   matchOnlyEmptyQualifiers: Boolean = false
   subpath: String
-  applicationId: [String!] = []
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time
 }
 
 """
@@ -3785,7 +3982,10 @@ input PkgInputSpec {
   namespace: String = ""
   name: String!
   version: String = ""
-  applicationId: [String!] = []
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time 
   qualifiers: [PackageQualifierInputSpec!] = []
   subpath: String = ""
 }
@@ -3854,6 +4054,7 @@ union Node
   | HasSourceAt
   | HasSBOM
   | HasSLSA
+  | Jenkins
 
 """
 Edge allows filtering path/neighbors output to only contain a subset of all

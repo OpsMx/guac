@@ -95,9 +95,16 @@ the trie.
 type PackageVersion {
   id: ID!
   version: String!
-  applicationId: [String!]
+  applicationDetails: [ApplicationDetails!]
   qualifiers: [PackageQualifier!]!
   subpath: String!
+}
+
+type ApplicationDetails {
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time
 }
 
 """
@@ -139,7 +146,10 @@ input PkgSpec {
   qualifiers: [PackageQualifierSpec!] = []
   matchOnlyEmptyQualifiers: Boolean = false
   subpath: String
-  applicationId: [String!] = []
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time
 }
 
 """
@@ -167,7 +177,10 @@ input PkgInputSpec {
   namespace: String = ""
   name: String!
   version: String = ""
-  applicationId: [String!] = []
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time 
   qualifiers: [PackageQualifierInputSpec!] = []
   subpath: String = ""
 }

@@ -32,6 +32,7 @@ type Backend interface {
 	Ghsa(ctx context.Context, ghsaSpec *model.GHSASpec) ([]*model.Ghsa, error)
 	Osv(ctx context.Context, osvSpec *model.OSVSpec) ([]*model.Osv, error)
 	Packages(ctx context.Context, pkgSpec *model.PkgSpec) ([]*model.Package, error)
+	Jenkins(ctx context.Context, jenkinsSpec *model.JenkinsSpec) ([]*model.Jenkins, error)
 	Sources(ctx context.Context, sourceSpec *model.SourceSpec) ([]*model.Source, error)
 
 	// Retrieval read-only queries for evidence trees
@@ -57,6 +58,7 @@ type Backend interface {
 	IngestMaterials(ctx context.Context, materials []*model.ArtifactInputSpec) ([]*model.Artifact, error)
 	IngestOsv(ctx context.Context, osv *model.OSVInputSpec) (*model.Osv, error)
 	IngestPackage(ctx context.Context, pkg model.PkgInputSpec) (*model.Package, error)
+	IngestJenkins(ctx context.Context, jenkins model.JenkinsInputSpec) (*model.Jenkins, error)
 	IngestSource(ctx context.Context, source model.SourceInputSpec) (*model.Source, error)
 
 	// Mutations for evidence trees (read-write queries, assume software trees ingested)

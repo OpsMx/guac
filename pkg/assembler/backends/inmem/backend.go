@@ -92,6 +92,7 @@ type demoClient struct {
 	occurrences          isOccurrenceList
 	osvs                 osvMap
 	packages             pkgTypeMap
+	jenkins              jenkinsMap
 	scorecards           scorecardList
 	sources              srcTypeMap
 	vexs                 vexList
@@ -143,6 +144,7 @@ func GetBackend(args backends.BackendArgs) (backends.Backend, error) {
 		occurrences:          isOccurrenceList{},
 		osvs:                 osvMap{},
 		packages:             pkgTypeMap{},
+		jenkins:              jenkinsMap{},
 		scorecards:           scorecardList{},
 		sources:              srcTypeMap{},
 		vexs:                 vexList{},
