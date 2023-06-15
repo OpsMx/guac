@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strconv"
 	"sync"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/guacsec/guac/pkg/assembler/graphql/model"
@@ -27,6 +28,182 @@ import (
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _ApplicationDetails_applicationId(ctx context.Context, field graphql.CollectedField, obj *model.ApplicationDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ApplicationDetails_applicationId(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ApplicationID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ApplicationDetails_applicationId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ApplicationDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ApplicationDetails_application(ctx context.Context, field graphql.CollectedField, obj *model.ApplicationDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ApplicationDetails_application(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Application, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ApplicationDetails_application(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ApplicationDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ApplicationDetails_owner(ctx context.Context, field graphql.CollectedField, obj *model.ApplicationDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ApplicationDetails_owner(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Owner, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ApplicationDetails_owner(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ApplicationDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ApplicationDetails_deploymentDate(ctx context.Context, field graphql.CollectedField, obj *model.ApplicationDetails) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ApplicationDetails_deploymentDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeploymentDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ApplicationDetails_deploymentDate(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ApplicationDetails",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _Package_id(ctx context.Context, field graphql.CollectedField, obj *model.Package) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Package_id(ctx, field)
@@ -299,8 +476,8 @@ func (ec *executionContext) fieldContext_PackageName_versions(ctx context.Contex
 				return ec.fieldContext_PackageVersion_id(ctx, field)
 			case "version":
 				return ec.fieldContext_PackageVersion_version(ctx, field)
-			case "applicationId":
-				return ec.fieldContext_PackageVersion_applicationId(ctx, field)
+			case "applicationDetails":
+				return ec.fieldContext_PackageVersion_applicationDetails(ctx, field)
 			case "qualifiers":
 				return ec.fieldContext_PackageVersion_qualifiers(ctx, field)
 			case "subpath":
@@ -628,8 +805,8 @@ func (ec *executionContext) fieldContext_PackageVersion_version(ctx context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _PackageVersion_applicationId(ctx context.Context, field graphql.CollectedField, obj *model.PackageVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_PackageVersion_applicationId(ctx, field)
+func (ec *executionContext) _PackageVersion_applicationDetails(ctx context.Context, field graphql.CollectedField, obj *model.PackageVersion) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_PackageVersion_applicationDetails(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -642,7 +819,7 @@ func (ec *executionContext) _PackageVersion_applicationId(ctx context.Context, f
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.ApplicationID, nil
+		return obj.ApplicationDetails, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -651,19 +828,29 @@ func (ec *executionContext) _PackageVersion_applicationId(ctx context.Context, f
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]string)
+	res := resTmp.([]*model.ApplicationDetails)
 	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+	return ec.marshalOApplicationDetails2ᚕᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐApplicationDetails(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_PackageVersion_applicationId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_PackageVersion_applicationDetails(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "PackageVersion",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "applicationId":
+				return ec.fieldContext_ApplicationDetails_applicationId(ctx, field)
+			case "application":
+				return ec.fieldContext_ApplicationDetails_application(ctx, field)
+			case "owner":
+				return ec.fieldContext_ApplicationDetails_owner(ctx, field)
+			case "deploymentDate":
+				return ec.fieldContext_ApplicationDetails_deploymentDate(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type ApplicationDetails", field.Name)
 		},
 	}
 	return fc, nil
@@ -857,7 +1044,13 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 		asMap["version"] = ""
 	}
 	if _, present := asMap["applicationId"]; !present {
-		asMap["applicationId"] = []interface{}{}
+		asMap["applicationId"] = ""
+	}
+	if _, present := asMap["application"]; !present {
+		asMap["application"] = ""
+	}
+	if _, present := asMap["owner"]; !present {
+		asMap["owner"] = ""
 	}
 	if _, present := asMap["qualifiers"]; !present {
 		asMap["qualifiers"] = []interface{}{}
@@ -866,7 +1059,7 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 		asMap["subpath"] = ""
 	}
 
-	fieldsInOrder := [...]string{"type", "namespace", "name", "version", "applicationId", "qualifiers", "subpath"}
+	fieldsInOrder := [...]string{"type", "namespace", "name", "version", "applicationId", "application", "owner", "deploymentDate", "qualifiers", "subpath"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -913,11 +1106,38 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationId"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.ApplicationID = data
+		case "application":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("application"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Application = data
+		case "owner":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("owner"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Owner = data
+		case "deploymentDate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deploymentDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeploymentDate = data
 		case "qualifiers":
 			var err error
 
@@ -955,11 +1175,8 @@ func (ec *executionContext) unmarshalInputPkgSpec(ctx context.Context, obj inter
 	if _, present := asMap["matchOnlyEmptyQualifiers"]; !present {
 		asMap["matchOnlyEmptyQualifiers"] = false
 	}
-	if _, present := asMap["applicationId"]; !present {
-		asMap["applicationId"] = []interface{}{}
-	}
 
-	fieldsInOrder := [...]string{"id", "type", "namespace", "name", "version", "qualifiers", "matchOnlyEmptyQualifiers", "subpath", "applicationId"}
+	fieldsInOrder := [...]string{"id", "type", "namespace", "name", "version", "qualifiers", "matchOnlyEmptyQualifiers", "subpath", "applicationId", "application", "owner", "deploymentDate"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -1042,11 +1259,38 @@ func (ec *executionContext) unmarshalInputPkgSpec(ctx context.Context, obj inter
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationId"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.ApplicationID = data
+		case "application":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("application"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Application = data
+		case "owner":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("owner"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Owner = data
+		case "deploymentDate":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("deploymentDate"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.DeploymentDate = data
 		}
 	}
 
@@ -1060,6 +1304,55 @@ func (ec *executionContext) unmarshalInputPkgSpec(ctx context.Context, obj inter
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
+
+var applicationDetailsImplementors = []string{"ApplicationDetails"}
+
+func (ec *executionContext) _ApplicationDetails(ctx context.Context, sel ast.SelectionSet, obj *model.ApplicationDetails) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, applicationDetailsImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ApplicationDetails")
+		case "applicationId":
+
+			out.Values[i] = ec._ApplicationDetails_applicationId(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "application":
+
+			out.Values[i] = ec._ApplicationDetails_application(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "owner":
+
+			out.Values[i] = ec._ApplicationDetails_owner(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deploymentDate":
+
+			out.Values[i] = ec._ApplicationDetails_deploymentDate(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
 
 var packageImplementors = []string{"Package", "PackageSourceOrArtifact", "PackageOrArtifact", "PackageOrSource", "Node"}
 
@@ -1246,9 +1539,9 @@ func (ec *executionContext) _PackageVersion(ctx context.Context, sel ast.Selecti
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "applicationId":
+		case "applicationDetails":
 
-			out.Values[i] = ec._PackageVersion_applicationId(ctx, field, obj)
+			out.Values[i] = ec._PackageVersion_applicationDetails(ctx, field, obj)
 
 		case "qualifiers":
 
@@ -1566,6 +1859,54 @@ func (ec *executionContext) marshalNPackageVersion2ᚖgithubᚗcomᚋguacsecᚋg
 func (ec *executionContext) unmarshalNPkgInputSpec2githubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐPkgInputSpec(ctx context.Context, v interface{}) (model.PkgInputSpec, error) {
 	res, err := ec.unmarshalInputPkgInputSpec(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOApplicationDetails2ᚕᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐApplicationDetails(ctx context.Context, sel ast.SelectionSet, v []*model.ApplicationDetails) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOApplicationDetails2ᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐApplicationDetails(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOApplicationDetails2ᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐApplicationDetails(ctx context.Context, sel ast.SelectionSet, v *model.ApplicationDetails) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._ApplicationDetails(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOPackageQualifierInputSpec2ᚕᚖgithubᚗcomᚋguacsecᚋguacᚋpkgᚋassemblerᚋgraphqlᚋmodelᚐPackageQualifierInputSpecᚄ(ctx context.Context, v interface{}) ([]*model.PackageQualifierInputSpec, error) {

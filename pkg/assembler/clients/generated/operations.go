@@ -1932,21 +1932,15 @@ func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageName) GetVersions() []A
 // are a subset of the qualifier of the other also mean two different packages in
 // the trie.
 type AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion struct {
-	Id            string                                                                                                 `json:"id"`
-	ApplicationId []string                                                                                               `json:"applicationId"`
-	Version       string                                                                                                 `json:"version"`
-	Qualifiers    []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionQualifiersPackageQualifier `json:"qualifiers"`
-	Subpath       string                                                                                                 `json:"subpath"`
+	Id         string                                                                                                 `json:"id"`
+	Version    string                                                                                                 `json:"version"`
+	Qualifiers []AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersionQualifiersPackageQualifier `json:"qualifiers"`
+	Subpath    string                                                                                                 `json:"subpath"`
 }
 
 // GetId returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.Id, and is useful for accessing the field via an interface.
 func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion) GetId() string {
 	return v.Id
-}
-
-// GetApplicationId returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.ApplicationId, and is useful for accessing the field via an interface.
-func (v *AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion) GetApplicationId() []string {
-	return v.ApplicationId
 }
 
 // GetVersion returns AllPkgTreeNamespacesPackageNamespaceNamesPackageNameVersionsPackageVersion.Version, and is useful for accessing the field via an interface.
@@ -17541,13 +17535,16 @@ func (v *PkgEqualResponse) GetIngestPkgEqual() PkgEqualIngestPkgEqual { return v
 // This is different than PkgSpec because we want to encode mandatory fields:
 // type and name. All optional fields are given empty default values.
 type PkgInputSpec struct {
-	Type          string                      `json:"type"`
-	Namespace     *string                     `json:"namespace"`
-	Name          string                      `json:"name"`
-	Version       *string                     `json:"version"`
-	ApplicationId []string                    `json:"applicationId"`
-	Qualifiers    []PackageQualifierInputSpec `json:"qualifiers"`
-	Subpath       *string                     `json:"subpath"`
+	Type           string                      `json:"type"`
+	Namespace      *string                     `json:"namespace"`
+	Name           string                      `json:"name"`
+	Version        *string                     `json:"version"`
+	ApplicationId  *string                     `json:"applicationId"`
+	Application    *string                     `json:"application"`
+	Owner          *string                     `json:"owner"`
+	DeploymentDate *time.Time                  `json:"deploymentDate"`
+	Qualifiers     []PackageQualifierInputSpec `json:"qualifiers"`
+	Subpath        *string                     `json:"subpath"`
 }
 
 // GetType returns PkgInputSpec.Type, and is useful for accessing the field via an interface.
@@ -17563,7 +17560,16 @@ func (v *PkgInputSpec) GetName() string { return v.Name }
 func (v *PkgInputSpec) GetVersion() *string { return v.Version }
 
 // GetApplicationId returns PkgInputSpec.ApplicationId, and is useful for accessing the field via an interface.
-func (v *PkgInputSpec) GetApplicationId() []string { return v.ApplicationId }
+func (v *PkgInputSpec) GetApplicationId() *string { return v.ApplicationId }
+
+// GetApplication returns PkgInputSpec.Application, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetApplication() *string { return v.Application }
+
+// GetOwner returns PkgInputSpec.Owner, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetOwner() *string { return v.Owner }
+
+// GetDeploymentDate returns PkgInputSpec.DeploymentDate, and is useful for accessing the field via an interface.
+func (v *PkgInputSpec) GetDeploymentDate() *time.Time { return v.DeploymentDate }
 
 // GetQualifiers returns PkgInputSpec.Qualifiers, and is useful for accessing the field via an interface.
 func (v *PkgInputSpec) GetQualifiers() []PackageQualifierInputSpec { return v.Qualifiers }
@@ -17601,7 +17607,10 @@ type PkgSpec struct {
 	Qualifiers               []PackageQualifierSpec `json:"qualifiers"`
 	MatchOnlyEmptyQualifiers *bool                  `json:"matchOnlyEmptyQualifiers"`
 	Subpath                  *string                `json:"subpath"`
-	ApplicationId            []string               `json:"applicationId"`
+	ApplicationId            *string                `json:"applicationId"`
+	Application              *string                `json:"application"`
+	Owner                    *string                `json:"owner"`
+	DeploymentDate           *time.Time             `json:"deploymentDate"`
 }
 
 // GetId returns PkgSpec.Id, and is useful for accessing the field via an interface.
@@ -17629,7 +17638,16 @@ func (v *PkgSpec) GetMatchOnlyEmptyQualifiers() *bool { return v.MatchOnlyEmptyQ
 func (v *PkgSpec) GetSubpath() *string { return v.Subpath }
 
 // GetApplicationId returns PkgSpec.ApplicationId, and is useful for accessing the field via an interface.
-func (v *PkgSpec) GetApplicationId() []string { return v.ApplicationId }
+func (v *PkgSpec) GetApplicationId() *string { return v.ApplicationId }
+
+// GetApplication returns PkgSpec.Application, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetApplication() *string { return v.Application }
+
+// GetOwner returns PkgSpec.Owner, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetOwner() *string { return v.Owner }
+
+// GetDeploymentDate returns PkgSpec.DeploymentDate, and is useful for accessing the field via an interface.
+func (v *PkgSpec) GetDeploymentDate() *time.Time { return v.DeploymentDate }
 
 // SLSAForArtifactIngestArtifact includes the requested fields of the GraphQL type Artifact.
 // The GraphQL type's documentation follows.
@@ -24003,7 +24021,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24079,7 +24096,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24212,7 +24228,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24294,7 +24309,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24376,7 +24390,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24491,7 +24504,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24626,7 +24638,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24702,7 +24713,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24835,7 +24845,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -24902,7 +24911,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25015,7 +25023,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25193,7 +25200,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25255,7 +25261,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25347,7 +25352,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25502,7 +25506,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25583,7 +25586,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -25724,7 +25726,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -26003,7 +26004,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -26412,7 +26412,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -26819,7 +26818,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -27199,7 +27197,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -27322,7 +27319,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -27675,7 +27671,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -27952,7 +27947,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -28109,7 +28103,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -28224,7 +28217,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -28340,7 +28332,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -28416,7 +28407,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key
@@ -28532,7 +28522,6 @@ fragment AllPkgTree on Package {
 			name
 			versions {
 				id
-				applicationId
 				version
 				qualifiers {
 					key

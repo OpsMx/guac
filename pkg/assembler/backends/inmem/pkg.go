@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/vektah/gqlparser/v2/gqlerror"
 
@@ -106,21 +107,21 @@ type pkgVersionStruct struct {
 }
 type pkgVersionList []*pkgVersionNode
 type pkgVersionNode struct {
-	id                uint32
-	applicationId     []string
-	parent            uint32
-	version           string
-	subpath           string
-	qualifiers        map[string]string
-	srcMapLinks       []uint32
-	isDependencyLinks []uint32
-	occurrences       []uint32
-	certifyVulnLinks  []uint32
-	hasSBOMs          []uint32
-	vexLinks          []uint32
-	badLinks          []uint32
-	goodLinks         []uint32
-	pkgEquals         []uint32
+	id                 uint32
+	applicationDetails []*model.ApplicationDetails
+	parent             uint32
+	version            string
+	subpath            string
+	qualifiers         map[string]string
+	srcMapLinks        []uint32
+	isDependencyLinks  []uint32
+	occurrences        []uint32
+	certifyVulnLinks   []uint32
+	hasSBOMs           []uint32
+	vexLinks           []uint32
+	badLinks           []uint32
+	goodLinks          []uint32
+	pkgEquals          []uint32
 }
 
 // Be type safe, don't use any / interface{}
@@ -274,15 +275,6 @@ func (p *pkgVersionNode) getCertifyGoodLinks() []uint32   { return p.goodLinks }
 // pkgEqual back edges
 func (p *pkgVersionNode) setPkgEquals(id uint32) { p.pkgEquals = append(p.pkgEquals, id) }
 
-func contains(list []string, target string) bool {
-	for _, item := range list {
-		if item == target {
-			return true
-		}
-	}
-	return false
-}
-
 // Ingest Package
 func (c *demoClient) IngestPackage(ctx context.Context, input model.PkgInputSpec) (*model.Package, error) {
 	c.m.RLock()
@@ -365,11 +357,23 @@ func (c *demoClient) IngestPackage(ctx context.Context, input model.PkgInputSpec
 		c.m.Unlock()
 	}
 
-	for i := range input.ApplicationID {
-		if !contains(collectedVersion.applicationId, input.ApplicationID[i]) {
-			collectedVersion.applicationId = append(collectedVersion.applicationId, input.ApplicationID[i])
-			updated = true
+	addAppDetails := true
+	if collectedVersion.applicationDetails != nil && len(collectedVersion.applicationDetails) > 0 {
+		for _, appDetail := range collectedVersion.applicationDetails {
+			if appDetail.ApplicationID == *input.ApplicationID && appDetail.Application == *input.Application && appDetail.Owner == *input.Owner && appDetail.DeploymentDate.Equal(*input.DeploymentDate) {
+				addAppDetails = false
+			}
 		}
+	}
+
+	if addAppDetails && input.ApplicationID != nil && strings.TrimSpace(*input.ApplicationID) != "" {
+		collectedVersion.applicationDetails = append(collectedVersion.applicationDetails, &model.ApplicationDetails{
+			ApplicationID:  *input.ApplicationID,
+			Application:    *input.Application,
+			Owner:          *input.Owner,
+			DeploymentDate: *input.DeploymentDate,
+		})
+		updated = true
 	}
 
 	if updated {
@@ -516,15 +520,25 @@ func buildPkgVersion(pkgVersionStruct *pkgVersionStruct, filter *model.PkgSpec) 
 		if filter != nil && noMatchQualifiers(filter, v.qualifiers) {
 			continue
 		}
-		if filter != nil && noMatchApplicationId(filter, v.applicationId) {
-			continue
+
+		matchedApps := v.applicationDetails
+
+		if filter != nil {
+			if filter.ApplicationID != nil || filter.Owner != nil || filter.Application != nil || filter.DeploymentDate != nil {
+				matchedApps = nil
+				matchedApps = matchAppDetails(filter, v.applicationDetails, matchedApps)
+				if len(matchedApps) == 0 {
+					continue
+				}
+			}
 		}
+
 		pvs = append(pvs, &model.PackageVersion{
-			ID:            nodeID(v.id),
-			ApplicationID: v.applicationId,
-			Version:       v.version,
-			Subpath:       v.subpath,
-			Qualifiers:    getCollectedPackageQualifiers(v.qualifiers),
+			ID:                 nodeID(v.id),
+			ApplicationDetails: matchedApps,
+			Version:            v.version,
+			Subpath:            v.subpath,
+			Qualifiers:         getCollectedPackageQualifiers(v.qualifiers),
 		})
 	}
 	return pvs
@@ -560,11 +574,11 @@ func (c *demoClient) buildPackageResponse(id uint32, filter *model.PkgSpec) (*mo
 			return nil, nil
 		}
 		pvl = append(pvl, &model.PackageVersion{
-			ID:            nodeID(versionNode.id),
-			ApplicationID: versionNode.applicationId,
-			Version:       versionNode.version,
-			Subpath:       versionNode.subpath,
-			Qualifiers:    getCollectedPackageQualifiers(versionNode.qualifiers),
+			ID:                 nodeID(versionNode.id),
+			ApplicationDetails: versionNode.applicationDetails,
+			Version:            versionNode.version,
+			Subpath:            versionNode.subpath,
+			Qualifiers:         getCollectedPackageQualifiers(versionNode.qualifiers),
 		})
 		node, ok = c.index[versionNode.parent]
 		if !ok {
@@ -709,16 +723,41 @@ func noMatchQualifiers(filter *model.PkgSpec, v map[string]string) bool {
 	return false
 }
 
-func noMatchApplicationId(filter *model.PkgSpec, appIds []string) bool {
-	if filter.ApplicationID != nil && len(filter.ApplicationID) > 0 {
-		for i := range filter.ApplicationID {
-			if containsElement(appIds, filter.ApplicationID[i]) {
-				return false
+func matchAppDetails(filter *model.PkgSpec, appDetails, returnAppDetails []*model.ApplicationDetails) []*model.ApplicationDetails {
+
+	for _, appDetail := range appDetails {
+		if filter.DeploymentDate != nil && !appDetail.DeploymentDate.IsZero() {
+			if appDetail.DeploymentDate.After(*filter.DeploymentDate) {
+				returnAppDetails = append(returnAppDetails, appDetail)
+				continue
 			}
 		}
-		return true
+		if filter.ApplicationID != nil && appDetail.ApplicationID != "" {
+			if *filter.ApplicationID == appDetail.ApplicationID {
+				returnAppDetails = append(returnAppDetails, appDetail)
+				continue
+			}
+		}
+		if filter.Owner != nil && appDetail.Owner != "" && filter.Application == nil {
+			if *filter.Owner == appDetail.Owner {
+				returnAppDetails = append(returnAppDetails, appDetail)
+				continue
+			}
+		}
+		if filter.Owner != nil && appDetail.Owner != "" && filter.Application != nil && appDetail.Application != "" {
+			if *filter.Owner == appDetail.Owner && *filter.Application == appDetail.Application {
+				returnAppDetails = append(returnAppDetails, appDetail)
+				continue
+			}
+		}
+		if filter.Application != nil && appDetail.Application != "" {
+			if *filter.Application == appDetail.Application {
+				returnAppDetails = append(returnAppDetails, appDetail)
+				continue
+			}
+		}
 	}
-	return false
+	return returnAppDetails
 }
 
 func (c *demoClient) exactPackageVersion(filter *model.PkgSpec) (*pkgVersionNode, error) {

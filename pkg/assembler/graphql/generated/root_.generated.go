@@ -43,6 +43,13 @@ type ComplexityRoot struct {
 		Value func(childComplexity int) int
 	}
 
+	ApplicationDetails struct {
+		Application    func(childComplexity int) int
+		ApplicationID  func(childComplexity int) int
+		DeploymentDate func(childComplexity int) int
+		Owner          func(childComplexity int) int
+	}
+
 	Artifact struct {
 		Algorithm func(childComplexity int) int
 		Digest    func(childComplexity int) int
@@ -229,11 +236,11 @@ type ComplexityRoot struct {
 	}
 
 	PackageVersion struct {
-		ApplicationID func(childComplexity int) int
-		ID            func(childComplexity int) int
-		Qualifiers    func(childComplexity int) int
-		Subpath       func(childComplexity int) int
-		Version       func(childComplexity int) int
+		ApplicationDetails func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		Qualifiers         func(childComplexity int) int
+		Subpath            func(childComplexity int) int
+		Version            func(childComplexity int) int
 	}
 
 	PkgEqual struct {
@@ -366,6 +373,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Annotation.Value(childComplexity), true
+
+	case "ApplicationDetails.application":
+		if e.complexity.ApplicationDetails.Application == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.Application(childComplexity), true
+
+	case "ApplicationDetails.applicationId":
+		if e.complexity.ApplicationDetails.ApplicationID == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.ApplicationID(childComplexity), true
+
+	case "ApplicationDetails.deploymentDate":
+		if e.complexity.ApplicationDetails.DeploymentDate == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.DeploymentDate(childComplexity), true
+
+	case "ApplicationDetails.owner":
+		if e.complexity.ApplicationDetails.Owner == nil {
+			break
+		}
+
+		return e.complexity.ApplicationDetails.Owner(childComplexity), true
 
 	case "Artifact.algorithm":
 		if e.complexity.Artifact.Algorithm == nil {
@@ -1284,12 +1319,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.PackageQualifier.Value(childComplexity), true
 
-	case "PackageVersion.applicationId":
-		if e.complexity.PackageVersion.ApplicationID == nil {
+	case "PackageVersion.applicationDetails":
+		if e.complexity.PackageVersion.ApplicationDetails == nil {
 			break
 		}
 
-		return e.complexity.PackageVersion.ApplicationID(childComplexity), true
+		return e.complexity.PackageVersion.ApplicationDetails(childComplexity), true
 
 	case "PackageVersion.id":
 		if e.complexity.PackageVersion.ID == nil {
@@ -3713,9 +3748,16 @@ the trie.
 type PackageVersion {
   id: ID!
   version: String!
-  applicationId: [String!]
+  applicationDetails: [ApplicationDetails]
   qualifiers: [PackageQualifier!]!
   subpath: String!
+}
+
+type ApplicationDetails {
+  applicationId: String!
+  application: String!
+  owner: String!
+  deploymentDate: Time!
 }
 
 """
@@ -3757,7 +3799,10 @@ input PkgSpec {
   qualifiers: [PackageQualifierSpec!] = []
   matchOnlyEmptyQualifiers: Boolean = false
   subpath: String
-  applicationId: [String!] = []
+  applicationId: String
+  application: String
+  owner: String
+  deploymentDate: Time
 }
 
 """
@@ -3785,7 +3830,10 @@ input PkgInputSpec {
   namespace: String = ""
   name: String!
   version: String = ""
-  applicationId: [String!] = []
+  applicationId: String = ""
+  application: String = ""
+  owner: String = ""
+  deploymentDate: Time
   qualifiers: [PackageQualifierInputSpec!] = []
   subpath: String = ""
 }

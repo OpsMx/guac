@@ -62,6 +62,13 @@ type AnnotationSpec struct {
 	Value string `json:"value"`
 }
 
+type ApplicationDetails struct {
+	ApplicationID  string    `json:"applicationId"`
+	Application    string    `json:"application"`
+	Owner          string    `json:"owner"`
+	DeploymentDate time.Time `json:"deploymentDate"`
+}
+
 // Artifact represents an artifact identified by a checksum hash.
 //
 // The checksum is split into the digest value and the algorithm used to generate
@@ -870,11 +877,11 @@ type PackageSourceOrArtifactSpec struct {
 // are a subset of the qualifier of the other also mean two different packages in
 // the trie.
 type PackageVersion struct {
-	ID            string              `json:"id"`
-	Version       string              `json:"version"`
-	ApplicationID []string            `json:"applicationId,omitempty"`
-	Qualifiers    []*PackageQualifier `json:"qualifiers"`
-	Subpath       string              `json:"subpath"`
+	ID                 string                `json:"id"`
+	Version            string                `json:"version"`
+	ApplicationDetails []*ApplicationDetails `json:"applicationDetails,omitempty"`
+	Qualifiers         []*PackageQualifier   `json:"qualifiers"`
+	Subpath            string                `json:"subpath"`
 }
 
 // PkgEqual is an attestation that a set of packages are similar.
@@ -917,13 +924,16 @@ type PkgEqualSpec struct {
 // This is different than PkgSpec because we want to encode mandatory fields:
 // type and name. All optional fields are given empty default values.
 type PkgInputSpec struct {
-	Type          string                       `json:"type"`
-	Namespace     *string                      `json:"namespace,omitempty"`
-	Name          string                       `json:"name"`
-	Version       *string                      `json:"version,omitempty"`
-	ApplicationID []string                     `json:"applicationId,omitempty"`
-	Qualifiers    []*PackageQualifierInputSpec `json:"qualifiers,omitempty"`
-	Subpath       *string                      `json:"subpath,omitempty"`
+	Type           string                       `json:"type"`
+	Namespace      *string                      `json:"namespace,omitempty"`
+	Name           string                       `json:"name"`
+	Version        *string                      `json:"version,omitempty"`
+	ApplicationID  *string                      `json:"applicationId,omitempty"`
+	Application    *string                      `json:"application,omitempty"`
+	Owner          *string                      `json:"owner,omitempty"`
+	DeploymentDate *time.Time                   `json:"deploymentDate,omitempty"`
+	Qualifiers     []*PackageQualifierInputSpec `json:"qualifiers,omitempty"`
+	Subpath        *string                      `json:"subpath,omitempty"`
 }
 
 // PkgNameSpec is used to query for dependent packages.
@@ -960,7 +970,10 @@ type PkgSpec struct {
 	Qualifiers               []*PackageQualifierSpec `json:"qualifiers,omitempty"`
 	MatchOnlyEmptyQualifiers *bool                   `json:"matchOnlyEmptyQualifiers,omitempty"`
 	Subpath                  *string                 `json:"subpath,omitempty"`
-	ApplicationID            []string                `json:"applicationId,omitempty"`
+	ApplicationID            *string                 `json:"applicationId,omitempty"`
+	Application              *string                 `json:"application,omitempty"`
+	Owner                    *string                 `json:"owner,omitempty"`
+	DeploymentDate           *time.Time              `json:"deploymentDate,omitempty"`
 }
 
 // SLSA contains all of the fields present in a SLSA attestation.
