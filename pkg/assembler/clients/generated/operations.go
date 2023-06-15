@@ -8945,6 +8945,14 @@ func (v *NeighborsNeighborsIsVulnerability) __premarshalJSON() (*__premarshalNei
 	return &retval, nil
 }
 
+// NeighborsNeighborsJenkins includes the requested fields of the GraphQL type Jenkins.
+type NeighborsNeighborsJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NeighborsNeighborsJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NeighborsNeighborsJenkins) GetTypename() *string { return v.Typename }
+
 // NeighborsNeighborsNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -8982,6 +8990,7 @@ func (v *NeighborsNeighborsNoVuln) GetId() string { return v.Id }
 // NeighborsNeighborsIsDependency
 // NeighborsNeighborsIsOccurrence
 // NeighborsNeighborsIsVulnerability
+// NeighborsNeighborsJenkins
 // NeighborsNeighborsNoVuln
 // NeighborsNeighborsOSV
 // NeighborsNeighborsPackage
@@ -9016,6 +9025,7 @@ func (v *NeighborsNeighborsHashEqual) implementsGraphQLInterfaceNeighborsNeighbo
 func (v *NeighborsNeighborsIsDependency) implementsGraphQLInterfaceNeighborsNeighborsNode()        {}
 func (v *NeighborsNeighborsIsOccurrence) implementsGraphQLInterfaceNeighborsNeighborsNode()        {}
 func (v *NeighborsNeighborsIsVulnerability) implementsGraphQLInterfaceNeighborsNeighborsNode()     {}
+func (v *NeighborsNeighborsJenkins) implementsGraphQLInterfaceNeighborsNeighborsNode()             {}
 func (v *NeighborsNeighborsNoVuln) implementsGraphQLInterfaceNeighborsNeighborsNode()              {}
 func (v *NeighborsNeighborsOSV) implementsGraphQLInterfaceNeighborsNeighborsNode()                 {}
 func (v *NeighborsNeighborsPackage) implementsGraphQLInterfaceNeighborsNeighborsNode()             {}
@@ -9083,6 +9093,9 @@ func __unmarshalNeighborsNeighborsNode(b []byte, v *NeighborsNeighborsNode) erro
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NeighborsNeighborsIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NeighborsNeighborsJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NeighborsNeighborsNoVuln)
@@ -9303,6 +9316,14 @@ func __marshalNeighborsNeighborsNode(v *NeighborsNeighborsNode) ([]byte, error) 
 			TypeName string `json:"__typename"`
 			*__premarshalNeighborsNeighborsIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NeighborsNeighborsJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NeighborsNeighborsJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NeighborsNeighborsNoVuln:
 		typename = "NoVuln"
@@ -9814,6 +9835,7 @@ func (v *NeighborsResponse) __premarshalJSON() (*__premarshalNeighborsResponse, 
 // NodeNodeIsDependency
 // NodeNodeIsOccurrence
 // NodeNodeIsVulnerability
+// NodeNodeJenkins
 // NodeNodeNoVuln
 // NodeNodeOSV
 // NodeNodePackage
@@ -9848,6 +9870,7 @@ func (v *NodeNodeHashEqual) implementsGraphQLInterfaceNodeNode()           {}
 func (v *NodeNodeIsDependency) implementsGraphQLInterfaceNodeNode()        {}
 func (v *NodeNodeIsOccurrence) implementsGraphQLInterfaceNodeNode()        {}
 func (v *NodeNodeIsVulnerability) implementsGraphQLInterfaceNodeNode()     {}
+func (v *NodeNodeJenkins) implementsGraphQLInterfaceNodeNode()             {}
 func (v *NodeNodeNoVuln) implementsGraphQLInterfaceNodeNode()              {}
 func (v *NodeNodeOSV) implementsGraphQLInterfaceNodeNode()                 {}
 func (v *NodeNodePackage) implementsGraphQLInterfaceNodeNode()             {}
@@ -9915,6 +9938,9 @@ func __unmarshalNodeNode(b []byte, v *NodeNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NodeNodeIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NodeNodeJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NodeNodeNoVuln)
@@ -10135,6 +10161,14 @@ func __marshalNodeNode(v *NodeNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalNodeNodeIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NodeNodeJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NodeNodeJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NodeNodeNoVuln:
 		typename = "NoVuln"
@@ -11760,6 +11794,14 @@ func (v *NodeNodeIsVulnerability) __premarshalJSON() (*__premarshalNodeNodeIsVul
 	retval.Collector = v.allIsVulnerability.Collector
 	return &retval, nil
 }
+
+// NodeNodeJenkins includes the requested fields of the GraphQL type Jenkins.
+type NodeNodeJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NodeNodeJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NodeNodeJenkins) GetTypename() *string { return v.Typename }
 
 // NodeNodeNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
@@ -13756,6 +13798,14 @@ func (v *NodesNodesIsVulnerability) __premarshalJSON() (*__premarshalNodesNodesI
 	return &retval, nil
 }
 
+// NodesNodesJenkins includes the requested fields of the GraphQL type Jenkins.
+type NodesNodesJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns NodesNodesJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *NodesNodesJenkins) GetTypename() *string { return v.Typename }
+
 // NodesNodesNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -13793,6 +13843,7 @@ func (v *NodesNodesNoVuln) GetId() string { return v.Id }
 // NodesNodesIsDependency
 // NodesNodesIsOccurrence
 // NodesNodesIsVulnerability
+// NodesNodesJenkins
 // NodesNodesNoVuln
 // NodesNodesOSV
 // NodesNodesPackage
@@ -13827,6 +13878,7 @@ func (v *NodesNodesHashEqual) implementsGraphQLInterfaceNodesNodesNode()        
 func (v *NodesNodesIsDependency) implementsGraphQLInterfaceNodesNodesNode()        {}
 func (v *NodesNodesIsOccurrence) implementsGraphQLInterfaceNodesNodesNode()        {}
 func (v *NodesNodesIsVulnerability) implementsGraphQLInterfaceNodesNodesNode()     {}
+func (v *NodesNodesJenkins) implementsGraphQLInterfaceNodesNodesNode()             {}
 func (v *NodesNodesNoVuln) implementsGraphQLInterfaceNodesNodesNode()              {}
 func (v *NodesNodesOSV) implementsGraphQLInterfaceNodesNodesNode()                 {}
 func (v *NodesNodesPackage) implementsGraphQLInterfaceNodesNodesNode()             {}
@@ -13894,6 +13946,9 @@ func __unmarshalNodesNodesNode(b []byte, v *NodesNodesNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(NodesNodesIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(NodesNodesJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(NodesNodesNoVuln)
@@ -14114,6 +14169,14 @@ func __marshalNodesNodesNode(v *NodesNodesNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalNodesNodesIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *NodesNodesJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*NodesNodesJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *NodesNodesNoVuln:
 		typename = "NoVuln"
@@ -16401,6 +16464,14 @@ func (v *PathPathIsVulnerability) __premarshalJSON() (*__premarshalPathPathIsVul
 	return &retval, nil
 }
 
+// PathPathJenkins includes the requested fields of the GraphQL type Jenkins.
+type PathPathJenkins struct {
+	Typename *string `json:"__typename"`
+}
+
+// GetTypename returns PathPathJenkins.Typename, and is useful for accessing the field via an interface.
+func (v *PathPathJenkins) GetTypename() *string { return v.Typename }
+
 // PathPathNoVuln includes the requested fields of the GraphQL type NoVuln.
 // The GraphQL type's documentation follows.
 //
@@ -16438,6 +16509,7 @@ func (v *PathPathNoVuln) GetId() string { return v.Id }
 // PathPathIsDependency
 // PathPathIsOccurrence
 // PathPathIsVulnerability
+// PathPathJenkins
 // PathPathNoVuln
 // PathPathOSV
 // PathPathPackage
@@ -16472,6 +16544,7 @@ func (v *PathPathHashEqual) implementsGraphQLInterfacePathPathNode()           {
 func (v *PathPathIsDependency) implementsGraphQLInterfacePathPathNode()        {}
 func (v *PathPathIsOccurrence) implementsGraphQLInterfacePathPathNode()        {}
 func (v *PathPathIsVulnerability) implementsGraphQLInterfacePathPathNode()     {}
+func (v *PathPathJenkins) implementsGraphQLInterfacePathPathNode()             {}
 func (v *PathPathNoVuln) implementsGraphQLInterfacePathPathNode()              {}
 func (v *PathPathOSV) implementsGraphQLInterfacePathPathNode()                 {}
 func (v *PathPathPackage) implementsGraphQLInterfacePathPathNode()             {}
@@ -16539,6 +16612,9 @@ func __unmarshalPathPathNode(b []byte, v *PathPathNode) error {
 		return json.Unmarshal(b, *v)
 	case "IsVulnerability":
 		*v = new(PathPathIsVulnerability)
+		return json.Unmarshal(b, *v)
+	case "Jenkins":
+		*v = new(PathPathJenkins)
 		return json.Unmarshal(b, *v)
 	case "NoVuln":
 		*v = new(PathPathNoVuln)
@@ -16759,6 +16835,14 @@ func __marshalPathPathNode(v *PathPathNode) ([]byte, error) {
 			TypeName string `json:"__typename"`
 			*__premarshalPathPathIsVulnerability
 		}{typename, premarshaled}
+		return json.Marshal(result)
+	case *PathPathJenkins:
+		typename = "Jenkins"
+
+		result := struct {
+			TypeName string `json:"__typename"`
+			*PathPathJenkins
+		}{typename, v}
 		return json.Marshal(result)
 	case *PathPathNoVuln:
 		typename = "NoVuln"

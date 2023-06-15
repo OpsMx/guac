@@ -670,6 +670,36 @@ type IsVulnerabilitySpec struct {
 	Collector     *string        `json:"collector,omitempty"`
 }
 
+type Jenkins struct {
+	ID            string  `json:"id"`
+	Image         string  `json:"image"`
+	JobName       string  `json:"jobName"`
+	BuildNumber   string  `json:"buildNumber"`
+	GitURL        *string `json:"gitUrl,omitempty"`
+	GitCommit     *string `json:"gitCommit,omitempty"`
+	GitCommitDiff *string `json:"gitCommitDiff,omitempty"`
+	JobURL        *string `json:"jobUrl,omitempty"`
+}
+
+func (Jenkins) IsNode() {}
+
+type JenkinsInputSpec struct {
+	Image         string  `json:"image"`
+	JobName       string  `json:"jobName"`
+	BuildNumber   string  `json:"buildNumber"`
+	GitURL        *string `json:"gitUrl,omitempty"`
+	GitCommit     *string `json:"gitCommit,omitempty"`
+	GitCommitDiff *string `json:"gitCommitDiff,omitempty"`
+	JobURL        *string `json:"jobUrl,omitempty"`
+}
+
+type JenkinsSpec struct {
+	ID          *string `json:"id,omitempty"`
+	Image       *string `json:"image,omitempty"`
+	JobName     *string `json:"jobName,omitempty"`
+	BuildNumber *string `json:"buildNumber,omitempty"`
+}
+
 // MatchFlags is used to input the PkgMatchType enum.
 type MatchFlags struct {
 	Pkg PkgMatchType `json:"pkg"`

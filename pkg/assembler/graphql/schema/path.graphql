@@ -46,6 +46,7 @@ union Node
   | HasSourceAt
   | HasSBOM
   | HasSLSA
+  | Jenkins
 
 """
 Edge allows filtering path/neighbors output to only contain a subset of all
