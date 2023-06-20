@@ -870,11 +870,10 @@ type PackageSourceOrArtifactSpec struct {
 // are a subset of the qualifier of the other also mean two different packages in
 // the trie.
 type PackageVersion struct {
-	ID            string              `json:"id"`
-	Version       string              `json:"version"`
-	ApplicationID []string            `json:"applicationId,omitempty"`
-	Qualifiers    []*PackageQualifier `json:"qualifiers"`
-	Subpath       string              `json:"subpath"`
+	ID         string              `json:"id"`
+	Version    string              `json:"version"`
+	Qualifiers []*PackageQualifier `json:"qualifiers"`
+	Subpath    string              `json:"subpath"`
 }
 
 // PkgEqual is an attestation that a set of packages are similar.
@@ -917,13 +916,12 @@ type PkgEqualSpec struct {
 // This is different than PkgSpec because we want to encode mandatory fields:
 // type and name. All optional fields are given empty default values.
 type PkgInputSpec struct {
-	Type          string                       `json:"type"`
-	Namespace     *string                      `json:"namespace,omitempty"`
-	Name          string                       `json:"name"`
-	Version       *string                      `json:"version,omitempty"`
-	ApplicationID []string                     `json:"applicationId,omitempty"`
-	Qualifiers    []*PackageQualifierInputSpec `json:"qualifiers,omitempty"`
-	Subpath       *string                      `json:"subpath,omitempty"`
+	Type       string                       `json:"type"`
+	Namespace  *string                      `json:"namespace,omitempty"`
+	Name       string                       `json:"name"`
+	Version    *string                      `json:"version,omitempty"`
+	Qualifiers []*PackageQualifierInputSpec `json:"qualifiers,omitempty"`
+	Subpath    *string                      `json:"subpath,omitempty"`
 }
 
 // PkgNameSpec is used to query for dependent packages.
@@ -960,7 +958,6 @@ type PkgSpec struct {
 	Qualifiers               []*PackageQualifierSpec `json:"qualifiers,omitempty"`
 	MatchOnlyEmptyQualifiers *bool                   `json:"matchOnlyEmptyQualifiers,omitempty"`
 	Subpath                  *string                 `json:"subpath,omitempty"`
-	ApplicationID            []string                `json:"applicationId,omitempty"`
 }
 
 // SLSA contains all of the fields present in a SLSA attestation.

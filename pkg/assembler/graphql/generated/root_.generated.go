@@ -229,11 +229,10 @@ type ComplexityRoot struct {
 	}
 
 	PackageVersion struct {
-		ApplicationID func(childComplexity int) int
-		ID            func(childComplexity int) int
-		Qualifiers    func(childComplexity int) int
-		Subpath       func(childComplexity int) int
-		Version       func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Qualifiers func(childComplexity int) int
+		Subpath    func(childComplexity int) int
+		Version    func(childComplexity int) int
 	}
 
 	PkgEqual struct {
@@ -1283,13 +1282,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.PackageQualifier.Value(childComplexity), true
-
-	case "PackageVersion.applicationId":
-		if e.complexity.PackageVersion.ApplicationID == nil {
-			break
-		}
-
-		return e.complexity.PackageVersion.ApplicationID(childComplexity), true
 
 	case "PackageVersion.id":
 		if e.complexity.PackageVersion.ID == nil {
@@ -3713,7 +3705,6 @@ the trie.
 type PackageVersion {
   id: ID!
   version: String!
-  applicationId: [String!]
   qualifiers: [PackageQualifier!]!
   subpath: String!
 }
@@ -3757,7 +3748,6 @@ input PkgSpec {
   qualifiers: [PackageQualifierSpec!] = []
   matchOnlyEmptyQualifiers: Boolean = false
   subpath: String
-  applicationId: [String!] = []
 }
 
 """
@@ -3785,7 +3775,6 @@ input PkgInputSpec {
   namespace: String = ""
   name: String!
   version: String = ""
-  applicationId: [String!] = []
   qualifiers: [PackageQualifierInputSpec!] = []
   subpath: String = ""
 }

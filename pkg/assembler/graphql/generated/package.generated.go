@@ -299,8 +299,6 @@ func (ec *executionContext) fieldContext_PackageName_versions(ctx context.Contex
 				return ec.fieldContext_PackageVersion_id(ctx, field)
 			case "version":
 				return ec.fieldContext_PackageVersion_version(ctx, field)
-			case "applicationId":
-				return ec.fieldContext_PackageVersion_applicationId(ctx, field)
 			case "qualifiers":
 				return ec.fieldContext_PackageVersion_qualifiers(ctx, field)
 			case "subpath":
@@ -628,47 +626,6 @@ func (ec *executionContext) fieldContext_PackageVersion_version(ctx context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _PackageVersion_applicationId(ctx context.Context, field graphql.CollectedField, obj *model.PackageVersion) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_PackageVersion_applicationId(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ApplicationID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]string)
-	fc.Result = res
-	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_PackageVersion_applicationId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "PackageVersion",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
 func (ec *executionContext) _PackageVersion_qualifiers(ctx context.Context, field graphql.CollectedField, obj *model.PackageVersion) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_PackageVersion_qualifiers(ctx, field)
 	if err != nil {
@@ -856,9 +813,6 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 	if _, present := asMap["version"]; !present {
 		asMap["version"] = ""
 	}
-	if _, present := asMap["applicationId"]; !present {
-		asMap["applicationId"] = []interface{}{}
-	}
 	if _, present := asMap["qualifiers"]; !present {
 		asMap["qualifiers"] = []interface{}{}
 	}
@@ -866,7 +820,7 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 		asMap["subpath"] = ""
 	}
 
-	fieldsInOrder := [...]string{"type", "namespace", "name", "version", "applicationId", "qualifiers", "subpath"}
+	fieldsInOrder := [...]string{"type", "namespace", "name", "version", "qualifiers", "subpath"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -909,15 +863,6 @@ func (ec *executionContext) unmarshalInputPkgInputSpec(ctx context.Context, obj 
 				return it, err
 			}
 			it.Version = data
-		case "applicationId":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationId"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ApplicationID = data
 		case "qualifiers":
 			var err error
 
@@ -955,11 +900,8 @@ func (ec *executionContext) unmarshalInputPkgSpec(ctx context.Context, obj inter
 	if _, present := asMap["matchOnlyEmptyQualifiers"]; !present {
 		asMap["matchOnlyEmptyQualifiers"] = false
 	}
-	if _, present := asMap["applicationId"]; !present {
-		asMap["applicationId"] = []interface{}{}
-	}
 
-	fieldsInOrder := [...]string{"id", "type", "namespace", "name", "version", "qualifiers", "matchOnlyEmptyQualifiers", "subpath", "applicationId"}
+	fieldsInOrder := [...]string{"id", "type", "namespace", "name", "version", "qualifiers", "matchOnlyEmptyQualifiers", "subpath"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -1038,15 +980,6 @@ func (ec *executionContext) unmarshalInputPkgSpec(ctx context.Context, obj inter
 				return it, err
 			}
 			it.Subpath = data
-		case "applicationId":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("applicationId"))
-			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.ApplicationID = data
 		}
 	}
 
@@ -1246,10 +1179,6 @@ func (ec *executionContext) _PackageVersion(ctx context.Context, sel ast.Selecti
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "applicationId":
-
-			out.Values[i] = ec._PackageVersion_applicationId(ctx, field, obj)
-
 		case "qualifiers":
 
 			out.Values[i] = ec._PackageVersion_qualifiers(ctx, field, obj)
