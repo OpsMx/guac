@@ -1242,7 +1242,9 @@ type VulnerabilityMetaData struct {
 	// Severity of Vulnerability
 	Severity *string `json:"severity,omitempty"`
 	// Fixed Version of Vulnerability
-	FixedVersion *string `json:"fixedVersion,omitempty"`
+	FixedVersion *string    `json:"fixedVersion,omitempty"`
+	Cwe          *string    `json:"cwe,omitempty"`
+	PublishedAt  *time.Time `json:"publishedAt,omitempty"`
 }
 
 // VulnerabilityMetaDataInput represents the input for certifying vulnerability

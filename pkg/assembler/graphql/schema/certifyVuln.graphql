@@ -109,6 +109,8 @@ type VulnerabilityMetaData {
   severity: String
   "Fixed Version of Vulnerability"
   fixedVersion: String
+  cwe: String
+  publishedAt: Time
   
 }
 

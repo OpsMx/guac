@@ -813,7 +813,9 @@ type AllCertifyVulnMetadataVulnerabilityMetaData struct {
 	// Severity of Vulnerability
 	Severity *string `json:"severity"`
 	// Fixed Version of Vulnerability
-	FixedVersion *string `json:"fixedVersion"`
+	FixedVersion *string    `json:"fixedVersion"`
+	Cwe          *string    `json:"cwe"`
+	PublishedAt  *time.Time `json:"publishedAt"`
 }
 
 // GetDbUri returns AllCertifyVulnMetadataVulnerabilityMetaData.DbUri, and is useful for accessing the field via an interface.
@@ -858,6 +860,14 @@ func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetSeverity() *string { re
 // GetFixedVersion returns AllCertifyVulnMetadataVulnerabilityMetaData.FixedVersion, and is useful for accessing the field via an interface.
 func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetFixedVersion() *string {
 	return v.FixedVersion
+}
+
+// GetCwe returns AllCertifyVulnMetadataVulnerabilityMetaData.Cwe, and is useful for accessing the field via an interface.
+func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetCwe() *string { return v.Cwe }
+
+// GetPublishedAt returns AllCertifyVulnMetadataVulnerabilityMetaData.PublishedAt, and is useful for accessing the field via an interface.
+func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetPublishedAt() *time.Time {
+	return v.PublishedAt
 }
 
 // AllCertifyVulnPackage includes the requested fields of the GraphQL type Package.
@@ -24406,6 +24416,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment AllOSVTree on OSV {
@@ -24519,6 +24531,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment AllCveTree on CVE {
@@ -24922,6 +24936,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment AllCveTree on CVE {
@@ -25038,6 +25054,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment AllCveTree on CVE {
@@ -26215,6 +26233,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment allIsVulnerability on IsVulnerability {
@@ -26623,6 +26643,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment allIsVulnerability on IsVulnerability {
@@ -27029,6 +27051,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment allIsVulnerability on IsVulnerability {
@@ -27530,6 +27554,8 @@ fragment AllCertifyVuln on CertifyVuln {
 		vulnerability
 		severity
 		fixedVersion
+		cwe
+		publishedAt
 	}
 }
 fragment allIsVulnerability on IsVulnerability {

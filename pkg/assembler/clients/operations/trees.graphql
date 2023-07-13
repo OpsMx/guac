@@ -280,6 +280,8 @@ fragment AllCertifyVuln on CertifyVuln {
     vulnerability
     severity
     fixedVersion
+    cwe
+    publishedAt
   }
 }
 

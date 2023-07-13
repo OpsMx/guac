@@ -51,6 +51,8 @@ type vulnerabilityLink struct {
 	vulnerability  string
 	severity       string
 	fixedVersion   string
+	published      time.Time
+	cweIds         string
 }
 
 func (n *vulnerabilityLink) ID() uint32 { return n.id }
@@ -222,6 +224,8 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			details:        customVulnerabilityDetails.Details,
 			vulnerability:  customVulnerabilityDetails.Aliases[0],
 			severity:       customVulnerabilityDetails.DataBaseSpecific.Severity,
+			published:      customVulnerabilityDetails.Published,
+			cweIds:         strings.Join(customVulnerabilityDetails.DataBaseSpecific.CWEIds, ","),
 			fixedVersion:   fixedVersion,
 		}
 		c.index[collectedCertifyVulnLink.id] = &collectedCertifyVulnLink
@@ -512,6 +516,8 @@ func (c *demoClient) buildCertifyVulnerability(link *vulnerabilityLink, filter *
 		Vulnerability:  &link.vulnerability,
 		Severity:       &link.severity,
 		FixedVersion:   &link.fixedVersion,
+		PublishedAt:    &link.published,
+		Cwe:            &link.cweIds,
 	}
 
 	certifyVuln := model.CertifyVuln{
@@ -528,10 +534,12 @@ type OSVApiVulnerability struct {
 	Details          string   `json:"details,omitempty" yaml:"details,omitempty"`
 	Aliases          []string `json:"aliases,omitempty" yaml:"aliases,omitempty"`
 	DataBaseSpecific struct {
-		Severity string `json:"severity,omitempty" yaml:"severity,omitempty"`
+		Severity string   `json:"severity,omitempty" yaml:"severity,omitempty"`
+		CWEIds   []string `json:"cwe_ids,omitempty" yaml:"cwe_ids,omitempty"`
 	} `json:"database_specific,omitempty" yaml:"database_specific,omitempty"`
-	Modified time.Time `json:"modified,omitempty" yaml:"modified,omitempty"`
-	Affected []struct {
+	Published time.Time `json:"published,omitempty" yaml:"published,omitempty"`
+	Modified  time.Time `json:"modified,omitempty" yaml:"modified,omitempty"`
+	Affected  []struct {
 		Versions []string `json:"versions,omitempty" yaml:"versions,omitempty"`
 		Ranges   []struct {
 			Events []struct {

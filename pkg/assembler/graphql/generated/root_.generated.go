@@ -323,11 +323,13 @@ type ComplexityRoot struct {
 
 	VulnerabilityMetaData struct {
 		Collector      func(childComplexity int) int
+		Cwe            func(childComplexity int) int
 		DbURI          func(childComplexity int) int
 		DbVersion      func(childComplexity int) int
 		Details        func(childComplexity int) int
 		FixedVersion   func(childComplexity int) int
 		Origin         func(childComplexity int) int
+		PublishedAt    func(childComplexity int) int
 		ScannerURI     func(childComplexity int) int
 		ScannerVersion func(childComplexity int) int
 		Severity       func(childComplexity int) int
@@ -1851,6 +1853,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.VulnerabilityMetaData.Collector(childComplexity), true
 
+	case "VulnerabilityMetaData.cwe":
+		if e.complexity.VulnerabilityMetaData.Cwe == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.Cwe(childComplexity), true
+
 	case "VulnerabilityMetaData.dbUri":
 		if e.complexity.VulnerabilityMetaData.DbURI == nil {
 			break
@@ -1885,6 +1894,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.VulnerabilityMetaData.Origin(childComplexity), true
+
+	case "VulnerabilityMetaData.publishedAt":
+		if e.complexity.VulnerabilityMetaData.PublishedAt == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.PublishedAt(childComplexity), true
 
 	case "VulnerabilityMetaData.scannerUri":
 		if e.complexity.VulnerabilityMetaData.ScannerURI == nil {
@@ -2742,6 +2758,8 @@ type VulnerabilityMetaData {
   severity: String
   "Fixed Version of Vulnerability"
   fixedVersion: String
+  cwe: String
+  publishedAt: Time
   
 }
 
