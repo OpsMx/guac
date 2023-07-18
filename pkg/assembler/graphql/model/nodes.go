@@ -1244,6 +1244,7 @@ type VulnerabilityMetaData struct {
 	// Fixed Version of Vulnerability
 	FixedVersion *string    `json:"fixedVersion,omitempty"`
 	Cwe          *string    `json:"cwe,omitempty"`
+	CweScore     *string    `json:"cweScore,omitempty"`
 	PublishedAt  *time.Time `json:"publishedAt,omitempty"`
 }
 

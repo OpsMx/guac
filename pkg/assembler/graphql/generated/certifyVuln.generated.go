@@ -234,6 +234,8 @@ func (ec *executionContext) fieldContext_CertifyVuln_metadata(ctx context.Contex
 				return ec.fieldContext_VulnerabilityMetaData_fixedVersion(ctx, field)
 			case "cwe":
 				return ec.fieldContext_VulnerabilityMetaData_cwe(ctx, field)
+			case "cweScore":
+				return ec.fieldContext_VulnerabilityMetaData_cweScore(ctx, field)
 			case "publishedAt":
 				return ec.fieldContext_VulnerabilityMetaData_publishedAt(ctx, field)
 			}
@@ -841,6 +843,47 @@ func (ec *executionContext) fieldContext_VulnerabilityMetaData_cwe(ctx context.C
 	return fc, nil
 }
 
+func (ec *executionContext) _VulnerabilityMetaData_cweScore(ctx context.Context, field graphql.CollectedField, obj *model.VulnerabilityMetaData) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_VulnerabilityMetaData_cweScore(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CweScore, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_VulnerabilityMetaData_cweScore(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "VulnerabilityMetaData",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _VulnerabilityMetaData_publishedAt(ctx context.Context, field graphql.CollectedField, obj *model.VulnerabilityMetaData) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_VulnerabilityMetaData_publishedAt(ctx, field)
 	if err != nil {
@@ -1404,6 +1447,10 @@ func (ec *executionContext) _VulnerabilityMetaData(ctx context.Context, sel ast.
 		case "cwe":
 
 			out.Values[i] = ec._VulnerabilityMetaData_cwe(ctx, field, obj)
+
+		case "cweScore":
+
+			out.Values[i] = ec._VulnerabilityMetaData_cweScore(ctx, field, obj)
 
 		case "publishedAt":
 

@@ -815,6 +815,7 @@ type AllCertifyVulnMetadataVulnerabilityMetaData struct {
 	// Fixed Version of Vulnerability
 	FixedVersion *string    `json:"fixedVersion"`
 	Cwe          *string    `json:"cwe"`
+	CweScore     *string    `json:"cweScore"`
 	PublishedAt  *time.Time `json:"publishedAt"`
 }
 
@@ -864,6 +865,9 @@ func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetFixedVersion() *string 
 
 // GetCwe returns AllCertifyVulnMetadataVulnerabilityMetaData.Cwe, and is useful for accessing the field via an interface.
 func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetCwe() *string { return v.Cwe }
+
+// GetCweScore returns AllCertifyVulnMetadataVulnerabilityMetaData.CweScore, and is useful for accessing the field via an interface.
+func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetCweScore() *string { return v.CweScore }
 
 // GetPublishedAt returns AllCertifyVulnMetadataVulnerabilityMetaData.PublishedAt, and is useful for accessing the field via an interface.
 func (v *AllCertifyVulnMetadataVulnerabilityMetaData) GetPublishedAt() *time.Time {
@@ -24417,6 +24421,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -24532,6 +24537,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -24937,6 +24943,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -25055,6 +25062,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -26234,6 +26242,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -26644,6 +26653,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -27052,6 +27062,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }
@@ -27555,6 +27566,7 @@ fragment AllCertifyVuln on CertifyVuln {
 		severity
 		fixedVersion
 		cwe
+		cweScore
 		publishedAt
 	}
 }

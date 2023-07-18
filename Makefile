@@ -94,7 +94,7 @@ generate:
 
 .PHONY: container
 container: check-docker-tool-check
-	$(CONTAINER) build -f dockerfiles/Dockerfile.guac-cont -t genos1998/guacy:v82 .
+	$(CONTAINER) build -f dockerfiles/Dockerfile.guac-cont -t genos1998/guacy:v85 .
 	$(CONTAINER) build -f dockerfiles/Dockerfile.healthcheck -t local-healthcheck .
 
 

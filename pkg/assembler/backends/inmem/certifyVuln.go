@@ -53,6 +53,7 @@ type vulnerabilityLink struct {
 	fixedVersion   string
 	published      time.Time
 	cweIds         string
+	cweScore       string
 }
 
 func (n *vulnerabilityLink) ID() uint32 { return n.id }
@@ -226,6 +227,7 @@ func (c *demoClient) ingestVulnerability(ctx context.Context, packageArg model.P
 			severity:       customVulnerabilityDetails.DataBaseSpecific.Severity,
 			published:      customVulnerabilityDetails.Published,
 			cweIds:         strings.Join(customVulnerabilityDetails.DataBaseSpecific.CWEIds, ","),
+			cweScore:       joinAllScores(customVulnerabilityDetails),
 			fixedVersion:   fixedVersion,
 		}
 		c.index[collectedCertifyVulnLink.id] = &collectedCertifyVulnLink
@@ -518,6 +520,7 @@ func (c *demoClient) buildCertifyVulnerability(link *vulnerabilityLink, filter *
 		FixedVersion:   &link.fixedVersion,
 		PublishedAt:    &link.published,
 		Cwe:            &link.cweIds,
+		CweScore:       &link.cweScore,
 	}
 
 	certifyVuln := model.CertifyVuln{
@@ -547,6 +550,9 @@ type OSVApiVulnerability struct {
 			} `json:"events,omitempty" yaml:"events,omitempty"`
 		} `json:"ranges,omitempty" yaml:"ranges,omitempty"`
 	} `json:"affected,omitempty" yaml:"affected,omitempty"`
+	Severity []struct {
+		Score string `json:"score,omitempty" yaml:"score,omitempty"`
+	} `json:"severity,omitempty" yaml:"severity,omitempty"`
 }
 
 func capitalizeFirstPart(input string) string {
@@ -634,4 +640,21 @@ func getFixedVersion(osvData OSVApiVulnerability, pkgVersion string) string {
 		}
 	}
 	return "No Fixed Version"
+}
+
+func joinAllScores(osvData OSVApiVulnerability) string {
+	var result []string
+	if len(osvData.Severity) == 0 {
+		return ""
+	}
+
+	if len(osvData.Severity) == 1 {
+		return osvData.Severity[0].Score
+	}
+
+	for _, severity := range osvData.Severity {
+		result = append(result, severity.Score)
+	}
+
+	return strings.Join(result, ",")
 }

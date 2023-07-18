@@ -324,6 +324,7 @@ type ComplexityRoot struct {
 	VulnerabilityMetaData struct {
 		Collector      func(childComplexity int) int
 		Cwe            func(childComplexity int) int
+		CweScore       func(childComplexity int) int
 		DbURI          func(childComplexity int) int
 		DbVersion      func(childComplexity int) int
 		Details        func(childComplexity int) int
@@ -1860,6 +1861,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.VulnerabilityMetaData.Cwe(childComplexity), true
 
+	case "VulnerabilityMetaData.cweScore":
+		if e.complexity.VulnerabilityMetaData.CweScore == nil {
+			break
+		}
+
+		return e.complexity.VulnerabilityMetaData.CweScore(childComplexity), true
+
 	case "VulnerabilityMetaData.dbUri":
 		if e.complexity.VulnerabilityMetaData.DbURI == nil {
 			break
@@ -2759,6 +2767,7 @@ type VulnerabilityMetaData {
   "Fixed Version of Vulnerability"
   fixedVersion: String
   cwe: String
+  cweScore: String
   publishedAt: Time
   
 }
