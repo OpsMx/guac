@@ -341,17 +341,18 @@ func (CertifyVuln) IsNode() {}
 // Only one vulnerability type (OSV, CVE, GHSA, or special NoVuln) may be
 // specified.
 type CertifyVulnSpec struct {
-	ID             *string            `json:"id,omitempty"`
-	Package        *PkgSpec           `json:"package,omitempty"`
-	Vulnerability  *VulnerabilitySpec `json:"vulnerability,omitempty"`
-	TimeScanned    *time.Time         `json:"timeScanned,omitempty"`
-	DbURI          *string            `json:"dbUri,omitempty"`
-	DbVersion      *string            `json:"dbVersion,omitempty"`
-	ScannerURI     *string            `json:"scannerUri,omitempty"`
-	ScannerVersion *string            `json:"scannerVersion,omitempty"`
-	Origin         *string            `json:"origin,omitempty"`
-	Collector      *string            `json:"collector,omitempty"`
-	Severity       *string            `json:"severity,omitempty"`
+	ID               *string            `json:"id,omitempty"`
+	Package          *PkgSpec           `json:"package,omitempty"`
+	Vulnerability    *VulnerabilitySpec `json:"vulnerability,omitempty"`
+	TimeScanned      *time.Time         `json:"timeScanned,omitempty"`
+	DbURI            *string            `json:"dbUri,omitempty"`
+	DbVersion        *string            `json:"dbVersion,omitempty"`
+	ScannerURI       *string            `json:"scannerUri,omitempty"`
+	ScannerVersion   *string            `json:"scannerVersion,omitempty"`
+	Origin           *string            `json:"origin,omitempty"`
+	Collector        *string            `json:"collector,omitempty"`
+	Severity         *string            `json:"severity,omitempty"`
+	CveVulnerability *string            `json:"cveVulnerability,omitempty"`
 }
 
 // CveOrGhsaInput allows using CveOrGhsa union as input type for mutations.

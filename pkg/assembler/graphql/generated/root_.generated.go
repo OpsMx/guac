@@ -2794,6 +2794,7 @@ input CertifyVulnSpec {
   origin: String
   collector: String
   severity: String
+  cveVulnerability: String
 }
 
 """
